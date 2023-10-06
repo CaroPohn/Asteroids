@@ -1,55 +1,60 @@
 #include "GameLoop.h"
+
 #include "header/raylib.h"
+
 #include "Scenes.h"
 
 static Scenes scene;
 
-void GameLoop()
+namespace Asteroids
 {
-	const int screenWidth = 1200;
-	const int screenHeight = 900;
-
-	InitWindow(screenWidth, screenHeight, "Asteroids");
-
-	scene = Scenes::Menu;
-	Scenes previousScene = Scenes::Exit;
-	bool isNewScene;
-
-	do
+	void GameLoop()
 	{
-		isNewScene = (scene != previousScene);
-		previousScene = scene;
+		const int screenWidth = 1200;
+		const int screenHeight = 900;
 
-		switch (scene)
+		InitWindow(screenWidth, screenHeight, "Asteroids");
+
+		scene = Scenes::Menu;
+		Scenes previousScene = Scenes::Exit;
+		bool isNewScene;
+
+		do
 		{
-		case Scenes::Menu:
-			break;
+			isNewScene = (scene != previousScene);
+			previousScene = scene;
 
-		case Scenes::Play:
-			break;
+			switch (scene)
+			{
+			case Scenes::Menu:
+				break;
 
-		case Scenes::Pause:
-			break;
+			case Scenes::Play:
+				break;
 
-		case Scenes::Rules:
-			break;
+			case Scenes::Pause:
+				break;
 
-		case Scenes::Credits:
-			break;
+			case Scenes::Rules:
+				break;
 
-		case Scenes::WinScreen:
-			break;
+			case Scenes::Credits:
+				break;
 
-		case Scenes::LoseScreen:
-			break;
+			case Scenes::WinScreen:
+				break;
 
-		case Scenes::Exit:
-			break;
+			case Scenes::LoseScreen:
+				break;
 
-		default:
-			break;
-		}
-	} while (!WindowShouldClose() && scene != Scenes::Exit);
+			case Scenes::Exit:
+				break;
 
-	CloseWindow();
+			default:
+				break;
+			}
+		} while (!WindowShouldClose() && scene != Scenes::Exit);
+
+		CloseWindow();
+	}
 }
