@@ -3,6 +3,7 @@
 #include "header/raylib.h"
 
 #include "Scenes.h"
+#include "Game/Menu.h"
 
 static Scenes scene;
 
@@ -27,6 +28,7 @@ namespace Asteroids
 			switch (scene)
 			{
 			case Scenes::Menu:
+				RunMenu(scene, isNewScene);
 				break;
 
 			case Scenes::Play:
