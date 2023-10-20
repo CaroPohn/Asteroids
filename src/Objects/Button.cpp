@@ -20,7 +20,7 @@ void DrawButton(Button& button)
 	else
 		button.color = RAYWHITE;
 
-	DrawTexture(button.texture, button.x, button.y, button.color);
+	DrawTexture(button.texture, static_cast<int>(button.x), static_cast<int>(button.y), button.color);
 }
 
 bool CheckCollisionButtonMouse(Vector2 mousePos, Button button)
