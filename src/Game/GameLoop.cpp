@@ -5,10 +5,10 @@
 #include "Scenes.h"
 #include "Game/Menu.h"
 
-static Scenes scene;
-
 namespace Asteroids
 {
+	static Scenes scene;
+
 	void GameLoop()
 	{
 		const int screenWidth = 1200;

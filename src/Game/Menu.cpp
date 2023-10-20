@@ -1,113 +1,117 @@
 #include "Game/Menu.h"
 
-Texture2D backTexture;
-Texture2D playButtonTexture;
-Texture2D rulesButtonTexture;
-Texture2D creditsButtonTexture;
-Texture2D exitButtonTexture;
-
-static Button playButton;
-static Button rulesButton;
-static Button creditsButton;
-static Button exitButton;
-
-void InitMenu()
+namespace Asteroids
 {
-	backTexture = LoadTexture("assets/backmenu.png");
-	InitMenuButtons();
-}
+	Texture2D backTexture;
+	Texture2D playButtonTexture;
+	Texture2D rulesButtonTexture;
+	Texture2D creditsButtonTexture;
+	Texture2D exitButtonTexture;
 
-void InitMenuButtons()
-{
-	playButtonTexture = LoadTexture("assets/playbutton.png");
-	rulesButtonTexture = LoadTexture("assets/rulesbutton.png");
-	creditsButtonTexture = LoadTexture("assets/creditsbutton.png");
-	exitButtonTexture = LoadTexture("assets/exitbutton.png");
+	static Button playButton;
+	static Button rulesButton;
+	static Button creditsButton;
+	static Button exitButton;
 
-	const float buttonWidth = 250;
-	const float buttonHeight = 110;
-	float buttonXPos = static_cast<float>(GetScreenWidth()) / 2 - buttonWidth / 2;
-	const float buttonDistance = buttonHeight + 20;
-
-	float exitButtonY = static_cast<float>(GetScreenHeight()) - buttonHeight - 50;
-	float creditsButtonY = exitButtonY - buttonDistance;
-	float rulesButtonY = creditsButtonY - buttonDistance;
-	float playButtonY = rulesButtonY - buttonDistance;
-	Color buttonColor = RAYWHITE;
-
-	InitButton(playButton, playButtonTexture, buttonXPos, playButtonY, buttonWidth, buttonHeight, buttonColor);
-	InitButton(rulesButton, rulesButtonTexture, buttonXPos, rulesButtonY, buttonWidth, buttonHeight, buttonColor);
-	InitButton(creditsButton, creditsButtonTexture, buttonXPos, creditsButtonY, buttonWidth, buttonHeight,buttonColor);
-	InitButton(exitButton, exitButtonTexture, buttonXPos, exitButtonY, buttonWidth, buttonHeight, buttonColor);
-}
-
-void DrawMenu()
-{
-	BeginDrawing();
-	DrawTexture(backTexture, 0, 0, RAYWHITE);
-
-	DrawButton(playButton);
-	DrawButton(rulesButton);
-	DrawButton(creditsButton);
-	DrawButton(exitButton);
-	EndDrawing();
-}
-
-void MenuInput(Scenes& scene)
-{
-	if (CheckCollisionButtonMouse(GetMousePosition(), playButton))
+	void InitMenu()
 	{
-		playButton.isSelected = true;
+		backTexture = LoadTexture("assets/backmenu.png");
+		InitMenuButtons();
+	}
 
-		if (CheckMouseInput(playButton))
+	void InitMenuButtons()
+	{
+		playButtonTexture = LoadTexture("assets/playbutton.png");
+		rulesButtonTexture = LoadTexture("assets/rulesbutton.png");
+		creditsButtonTexture = LoadTexture("assets/creditsbutton.png");
+		exitButtonTexture = LoadTexture("assets/exitbutton.png");
+
+		const float buttonWidth = 250;
+		const float buttonHeight = 110;
+		float buttonXPos = static_cast<float>(GetScreenWidth()) / 2 - buttonWidth / 2;
+		const float buttonDistance = buttonHeight + 20;
+
+		float exitButtonY = static_cast<float>(GetScreenHeight()) - buttonHeight - 50;
+		float creditsButtonY = exitButtonY - buttonDistance;
+		float rulesButtonY = creditsButtonY - buttonDistance;
+		float playButtonY = rulesButtonY - buttonDistance;
+		Color buttonColor = RAYWHITE;
+
+		InitButton(playButton, playButtonTexture, buttonXPos, playButtonY, buttonWidth, buttonHeight, buttonColor);
+		InitButton(rulesButton, rulesButtonTexture, buttonXPos, rulesButtonY, buttonWidth, buttonHeight, buttonColor);
+		InitButton(creditsButton, creditsButtonTexture, buttonXPos, creditsButtonY, buttonWidth, buttonHeight,buttonColor);
+		InitButton(exitButton, exitButtonTexture, buttonXPos, exitButtonY, buttonWidth, buttonHeight, buttonColor);
+	}
+
+	void DrawMenu()
+	{
+		BeginDrawing();
+		DrawTexture(backTexture, 0, 0, RAYWHITE);
+
+		DrawButton(playButton);
+		DrawButton(rulesButton);
+		DrawButton(creditsButton);
+		DrawButton(exitButton);
+		EndDrawing();
+	}
+
+	void MenuInput(Scenes& scene)
+	{
+		if (CheckCollisionButtonMouse(GetMousePosition(), playButton))
 		{
-			scene = Scenes::Play;
-		}
-	}
-	else
-		playButton.isSelected = false;
+			playButton.isSelected = true;
 
-	if (CheckCollisionButtonMouse(GetMousePosition(), rulesButton))
-	{
-		rulesButton.isSelected = true;
-		if (CheckMouseInput(rulesButton))
+			if (CheckMouseInput(playButton))
+			{
+				scene = Scenes::Play;
+			}
+		}
+		else
+			playButton.isSelected = false;
+
+		if (CheckCollisionButtonMouse(GetMousePosition(), rulesButton))
 		{
-			scene = Scenes::Rules;
+			rulesButton.isSelected = true;
+			if (CheckMouseInput(rulesButton))
+			{
+				scene = Scenes::Rules;
+			}
 		}
-	}
-	else
-		rulesButton.isSelected = false;
+		else
+			rulesButton.isSelected = false;
 
-	if (CheckCollisionButtonMouse(GetMousePosition(), creditsButton))
-	{
-		creditsButton.isSelected = true;
-		if (CheckMouseInput(creditsButton))
+		if (CheckCollisionButtonMouse(GetMousePosition(), creditsButton))
 		{
-			scene = Scenes::Credits;
+			creditsButton.isSelected = true;
+			if (CheckMouseInput(creditsButton))
+			{
+				scene = Scenes::Credits;
+			}
 		}
-	}
-	else
-		creditsButton.isSelected = false;
+		else
+			creditsButton.isSelected = false;
 
-	if (CheckCollisionButtonMouse(GetMousePosition(), exitButton))
-	{
-		exitButton.isSelected = true;
-		if (CheckMouseInput(exitButton))
+		if (CheckCollisionButtonMouse(GetMousePosition(), exitButton))
 		{
-			scene = Scenes::Exit;
+			exitButton.isSelected = true;
+			if (CheckMouseInput(exitButton))
+			{
+				scene = Scenes::Exit;
+			}
 		}
+		else
+			exitButton.isSelected = false;
 	}
-	else
-		exitButton.isSelected = false;
-}
 
-void RunMenu(Scenes& scene, bool isNewScene)
-{
-	if (isNewScene)
+	void RunMenu(Scenes& scene, bool isNewScene)
 	{
-		InitMenu();
+		if (isNewScene)
+		{
+			InitMenu();
+		}
+
+		MenuInput(scene);
+		DrawMenu();
 	}
 
-	MenuInput(scene);
-	DrawMenu();
 }
