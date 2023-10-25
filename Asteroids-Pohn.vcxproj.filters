@@ -30,6 +30,9 @@
     <ClCompile Include="src\Game\Play.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="Spaceship.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game\GameLoop.h">
@@ -45,6 +48,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\Play.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Spaceship.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

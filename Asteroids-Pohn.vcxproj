@@ -99,6 +99,7 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Spaceship.cpp" />
     <ClCompile Include="src\Game\GameLoop.cpp" />
     <ClCompile Include="src\Game\Menu.cpp" />
     <ClCompile Include="src\Game\Play.cpp" />
@@ -106,6 +107,7 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClCompile Include="src\Objects\Button.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Spaceship.h" />
     <ClInclude Include="src\Game\GameLoop.h" />
     <ClInclude Include="src\Game\Menu.h" />
     <ClInclude Include="src\Game\Play.h" />
