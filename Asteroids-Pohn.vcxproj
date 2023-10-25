@@ -99,20 +99,22 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Spaceship.cpp" />
     <ClCompile Include="src\Game\GameLoop.cpp" />
     <ClCompile Include="src\Game\Menu.cpp" />
     <ClCompile Include="src\Game\Play.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Objects\Asteroid.cpp" />
     <ClCompile Include="src\Objects\Button.cpp" />
+    <ClCompile Include="src\Objects\Spaceship.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Spaceship.h" />
     <ClInclude Include="src\Game\GameLoop.h" />
     <ClInclude Include="src\Game\Menu.h" />
     <ClInclude Include="src\Game\Play.h" />
     <ClInclude Include="src\Game\Scenes.h" />
+    <ClInclude Include="src\Objects\Asteroid.h" />
     <ClInclude Include="src\Objects\Button.h" />
+    <ClInclude Include="src\Objects\Spaceship.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
