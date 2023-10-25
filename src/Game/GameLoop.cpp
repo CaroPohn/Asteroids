@@ -11,8 +11,8 @@ namespace Asteroids
 
 	void GameLoop()
 	{
-		const int screenWidth = 1200;
-		const int screenHeight = 900;
+		const int screenWidth = 1024;
+		const int screenHeight = 768;
 
 		InitWindow(screenWidth, screenHeight, "Asteroids");
 
