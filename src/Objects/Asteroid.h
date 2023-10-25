@@ -5,6 +5,11 @@ namespace Asteroids
 {
 	static const int MIN_ROT_SPEED = 5;
 	static const int MAX_ROT_SPEED = 240;
+
+	static const int ASTEROID_MIN_SPEED = 100;
+	static const int ASTEROID_MAX_SPEED = 300;
+
+	static const int ASTEROID_RANDOM_ANGLE = static_cast<int>(30 * DEG2RAD);
 	
 	enum AsteroidSize
 	{
