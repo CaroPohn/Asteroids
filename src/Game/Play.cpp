@@ -1,15 +1,26 @@
 #include "Game/Play.h"
 #include "header/raymath.h"
+#include "Objects/Spaceship.h"
 
 namespace Asteroids
 {
+	Vector2 playerInitPosition = { (1024.0f / 2.0f), ( 768.0f / 2.0f) }; //Arreglar
+	Spaceship player = InitSpaceship(playerInitPosition);
+
 	static const int MAX_ASTEROIDS = 10;
 
 	Asteroid static asteroidsArr[MAX_ASTEROIDS] = { 0 };
 	AsteroidSize asteroidSizes[] = { Small, Medium, Large };
 
+	Vector2 mousePos;
+	float angle;
+	Rectangle spaceship;
+	Vector2 origin;
+
 	void Update()
 	{
+		HideCursor();
+		
 		for (int i = 0; i < MAX_ASTEROIDS; i++)
 		{
 			AsteroidUpdate(asteroidsArr[i]);
@@ -21,6 +32,8 @@ namespace Asteroids
 			AddAsteroid(GetNextAsteroidPosition(), nextSize);
 			lastAsteroidCreationTime = static_cast<float>(GetTime());
 		}
+
+		SpaceshipMovement(player, spaceship, origin, mousePos, angle, GetScreenWidth(), GetScreenHeight());
 	}
 
 	void Drawing()
@@ -33,6 +46,9 @@ namespace Asteroids
 		{
 			AsteroidDraw(asteroidsArr[i]);
 		}
+
+		DrawCircle(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y), 5, BLUE); //cursor
+		SpaceshipDrawing(spaceship, origin, angle);
 
 		EndDrawing();
 	}
