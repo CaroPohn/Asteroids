@@ -10,6 +10,10 @@ namespace Asteroids
 	static const int ASTEROID_MAX_SPEED = 300;
 
 	static const int ASTEROID_RANDOM_ANGLE = static_cast<int>(30 * DEG2RAD);
+
+	static const float ASTEROID_LIFE = 10.0f;
+	static const float ASTEROID_DELAY = 0.75f;
+	static float lastAsteroidCreationTime = -1.0f;
 	
 	enum AsteroidSize
 	{
@@ -25,10 +29,12 @@ namespace Asteroids
 		Vector2 position;
 		float rotation;
 		float rotationSpeed;
+		float creationTime;
 		Vector2 velocity;
 	};
 
 	Asteroid InitAsteroid(Vector2 position, Vector2 velocity, AsteroidSize size);
 	void AsteroidUpdate(Asteroid& asteroid);
 	void AsteroidDraw(Asteroid asteroid);
+	void AsteroidsReturnToScreen(Asteroid& asteroid, float screenWidth, float screenHeight);
 }

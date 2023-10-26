@@ -15,6 +15,7 @@ namespace Asteroids
 		asteroid.velocity = velocity;
 		asteroid.rotation = static_cast<float>(rand() % 360);
 		asteroid.rotationSpeed = static_cast<float>(GetRandomValue(MIN_ROT_SPEED, MAX_ROT_SPEED));
+		asteroid.creationTime = static_cast<float>(GetTime());
 
 		return asteroid;
 	}
@@ -25,6 +26,14 @@ namespace Asteroids
 		{
 			return;
 		}
+
+		//if (GetTime() > asteroid.creationTime + ASTEROID_LIFE)
+		//{
+		//	asteroid.isActive = false;
+		//	return;
+		//}
+
+		AsteroidsReturnToScreen(asteroid, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()));
 		
 		asteroid.position = Vector2Add(asteroid.position, Vector2Scale(asteroid.velocity, GetFrameTime()));
 		asteroid.rotation += asteroid.rotationSpeed * GetFrameTime();
@@ -32,6 +41,11 @@ namespace Asteroids
 
 	void AsteroidDraw(Asteroid asteroid)
 	{
+		if (!asteroid.isActive)
+		{
+			return;
+		}
+		
 		float asteroidRadius = 0;
 
 		if (asteroid.size & Small)
@@ -42,5 +56,66 @@ namespace Asteroids
 			asteroidRadius = 64;
 
 		DrawPolyLines(asteroid.position, 3, asteroidRadius, asteroid.rotation, WHITE);
+	}
+
+	void AsteroidsReturnToScreen(Asteroid& asteroid, float screenWidth, float screenHeight)
+	{
+		if (asteroid.position.x + asteroid.velocity.x * GetFrameTime() > screenWidth)
+		{
+			asteroid.position.x = 0;
+			if (asteroid.velocity.y > 0)
+			{
+				if (asteroid.position.y > screenHeight / 2)
+					asteroid.position.y = screenHeight - asteroid.position.y;
+			}
+			else if (asteroid.velocity.y < 0)
+			{
+				if (asteroid.position.y < screenHeight / 2)
+					asteroid.position.y = screenHeight - asteroid.position.y;
+			}
+		}
+		else if (asteroid.position.x + asteroid.velocity.x * GetFrameTime() < 0)
+		{
+			asteroid.position.x = screenWidth;
+			if (asteroid.velocity.y > 0)
+			{
+				if (asteroid.position.y > screenHeight / 2)
+					asteroid.position.y = screenHeight - asteroid.position.y;
+			}
+			else if (asteroid.velocity.y < 0)
+			{
+				if (asteroid.position.y < screenHeight / 2)
+					asteroid.position.y = screenHeight - asteroid.position.y;
+			}
+		}
+
+		if (asteroid.position.y + asteroid.velocity.y * GetFrameTime() > screenHeight)
+		{
+			asteroid.position.y = 0;
+			if (asteroid.velocity.x > 0)
+			{
+				if (asteroid.position.x > screenWidth / 2)
+					asteroid.position.x = screenWidth - asteroid.position.x;
+			}
+			else if (asteroid.velocity.x < 0)
+			{
+				if (asteroid.position.x < screenWidth / 2)
+					asteroid.position.x = screenWidth - asteroid.position.x;
+			}
+		}
+		else if (asteroid.position.y + asteroid.velocity.y * GetFrameTime() < 0)
+		{
+			asteroid.position.y = screenHeight;
+			if (asteroid.velocity.x > 0)
+			{
+				if (asteroid.position.x > screenWidth / 2)
+					asteroid.position.x = screenWidth - asteroid.position.x;
+			}
+			else if (asteroid.velocity.x < 0)
+			{
+				if (asteroid.position.x < screenWidth / 2)
+					asteroid.position.x = screenWidth - asteroid.position.x;
+			}
+		}
 	}
 }

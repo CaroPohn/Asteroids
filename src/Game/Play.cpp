@@ -3,7 +3,7 @@
 
 namespace Asteroids
 {
-	static const int MAX_ASTEROIDS = 64;
+	static const int MAX_ASTEROIDS = 10;
 
 	Asteroid static asteroidsArr[MAX_ASTEROIDS] = { 0 };
 	AsteroidSize asteroidSizes[] = { Small, Medium, Large };
@@ -15,10 +15,11 @@ namespace Asteroids
 			AsteroidUpdate(asteroidsArr[i]);
 		}
 
-		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+		if (GetTime() > lastAsteroidCreationTime + ASTEROID_DELAY)
 		{
-			//AsteroidSize nextSize = asteroidSizes[GetRandomValue(0, 2)];
-			AddAsteroid(GetMousePosition(), Large);
+			AsteroidSize nextSize = asteroidSizes[GetRandomValue(0, 2)];
+			AddAsteroid(GetNextAsteroidPosition(), nextSize);
+			lastAsteroidCreationTime = static_cast<float>(GetTime());
 		}
 	}
 
@@ -57,6 +58,33 @@ namespace Asteroids
 			created = true;
 			break;
 		}
+	}
+
+	Vector2 GetNextAsteroidPosition()
+	{
+		float offscreenDist = 128.0f;
+		Vector2 result = { -offscreenDist, -offscreenDist };
+
+		if (GetRandomValue(0, 1))
+		{
+			if (GetRandomValue(0, 1))
+			{
+				result.y = GetScreenHeight() + offscreenDist;
+			}
+
+			result.x = static_cast<float>(GetRandomValue(static_cast<int>(- offscreenDist), GetScreenWidth() + static_cast<int>(offscreenDist)));
+		}
+		else
+		{
+			if (GetRandomValue(0, 1))
+			{
+				result.x = GetScreenWidth() + offscreenDist;
+			}
+
+			result.y = static_cast<float>(GetRandomValue(static_cast<int>(-offscreenDist), GetScreenHeight() + static_cast<int>(offscreenDist)));
+		}
+
+		return result;
 	}
 
 	void RunGame()
