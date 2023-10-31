@@ -26,15 +26,16 @@ namespace Asteroids
 		creditsButtonTexture = LoadTexture("assets/creditsbutton.png");
 		exitButtonTexture = LoadTexture("assets/exitbutton.png");
 
-		const float buttonWidth = 250;
-		const float buttonHeight = 110;
+		const float buttonWidth = static_cast<float>(playButtonTexture.width);
+		const float buttonHeight = static_cast<float>(playButtonTexture.height);
 		float buttonXPos = static_cast<float>(GetScreenWidth()) / 2 - buttonWidth / 2;
-		const float buttonDistance = buttonHeight + 20;
+		const float buttonDistance = buttonHeight + 15;
 
-		float exitButtonY = static_cast<float>(GetScreenHeight()) - buttonHeight - 50;
-		float creditsButtonY = exitButtonY - buttonDistance;
-		float rulesButtonY = creditsButtonY - buttonDistance;
-		float playButtonY = rulesButtonY - buttonDistance;
+		float playButtonY = static_cast<float>(GetScreenHeight()) / 2 - buttonHeight / 2;
+		float rulesButtonY = playButtonY + buttonDistance;
+		float creditsButtonY = rulesButtonY + buttonDistance;
+		float exitButtonY = creditsButtonY + buttonDistance;
+
 		Color buttonColor = RAYWHITE;
 
 		InitButton(playButton, playButtonTexture, buttonXPos, playButtonY, buttonWidth, buttonHeight, buttonColor);
