@@ -105,6 +105,7 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\Asteroid.cpp" />
     <ClCompile Include="src\Objects\Button.cpp" />
+    <ClCompile Include="src\Objects\Projectile.cpp" />
     <ClCompile Include="src\Objects\Spaceship.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +115,7 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClInclude Include="src\Game\Scenes.h" />
     <ClInclude Include="src\Objects\Asteroid.h" />
     <ClInclude Include="src\Objects\Button.h" />
+    <ClInclude Include="src\Objects\Projectile.h" />
     <ClInclude Include="src\Objects\Spaceship.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
