@@ -1,25 +1,38 @@
 #include "Game/Play.h"
+
 #include "header/raymath.h"
 #include "Objects/Spaceship.h"
+#include "Objects/Projectile.h"
 
 namespace Asteroids
 {
 	Vector2 playerInitPosition = { (1024.0f / 2.0f), ( 768.0f / 2.0f) }; //Arreglar
-	Spaceship player = InitSpaceship(playerInitPosition);
 
 	static const int MAX_ASTEROIDS = 10;
+	static const int MAX_PROJECTILES = 20;
 
 	Asteroid static asteroidsArr[MAX_ASTEROIDS] = { 0 };
 	AsteroidSize asteroidSizes[] = { Small, Medium, Large };
+
+	Projectile static projectiles[MAX_PROJECTILES];
 
 	Vector2 mousePos;
 	float angle;
 	Rectangle spaceship;
 	Vector2 origin;
 
-	void Update()
+	Spaceship player;
+
+	void Init()
+	{
+		player = InitSpaceship(playerInitPosition);
+	}
+
+	void Update(Scenes& scene)
 	{
 		HideCursor();
+
+		scene = scene; //esto no va despues
 		
 		for (int i = 0; i < MAX_ASTEROIDS; i++)
 		{
@@ -48,14 +61,13 @@ namespace Asteroids
 		}
 
 		DrawCircle(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y), 5, BLUE); //cursor
-		SpaceshipDrawing(spaceship, origin, angle);
+		PlayerDrawing(player, spaceship, angle);
 
 		EndDrawing();
 	}
 
 	void AddAsteroid(Vector2 position, AsteroidSize size)
 	{
-		bool created = false;
 		Vector2 screenCenter = { static_cast<float>(GetScreenHeight() / 2),  static_cast<float>(GetScreenWidth() / 2) };
 
 		Vector2 velocity = Vector2Subtract(screenCenter, position);
@@ -71,7 +83,6 @@ namespace Asteroids
 			}
 
 			asteroidsArr[i] = InitAsteroid(position, velocity, size);
-			created = true;
 			break;
 		}
 	}
@@ -103,9 +114,28 @@ namespace Asteroids
 		return result;
 	}
 
-	void RunGame()
+	void AddProjectile(Vector2 position, float rotation)
 	{
-		Update();
+		for (int i = 0; i < MAX_PROJECTILES; i++)
+		{
+			if (projectiles[i].isActive)
+			{
+				continue;
+			}
+
+			projectiles[i] = CreateProjectile(position, rotation);
+			break;
+		}
+	}
+
+	void RunGame(Scenes& scene, bool isNewScene)
+	{
+		if (isNewScene)
+		{
+			Init();
+		}
+		
+		Update(scene);
 		Drawing();
 	}
 }

@@ -9,11 +9,15 @@ namespace Asteroids
 		Vector2 direction;
 		Vector2 acceleration = {300, 300};
 		Vector2 velocity;
+		Texture2D texture;
+		Rectangle dest = { 0, 0, 85, 50 };
+		float scale = 0.35f;
+		float radius = 50.0f;
 	};
 
 	Spaceship InitSpaceship(Vector2 position);
 	void SpaceshipMovement(Spaceship& player, Rectangle& spaceship, Vector2& origin, Vector2& mousePos, float& angle, int screenWidth, int screenHeight);
-	void SpaceshipDrawing(Rectangle spaceship, Vector2 origin, float angle);
+	void PlayerDrawing(Spaceship player, Rectangle source, float angle);
 	void SpaceshipReturnToScreen(Spaceship& player, int screenWidth, int screenHeight);
 
 }

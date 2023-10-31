@@ -33,7 +33,7 @@ namespace Asteroids
 				break;
 
 			case Scenes::Play:
-				RunGame();
+				RunGame(scene, isNewScene);
 				break;
 
 			case Scenes::Pause:

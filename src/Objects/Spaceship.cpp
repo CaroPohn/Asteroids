@@ -1,4 +1,5 @@
 #include "Spaceship.h"
+
 #include "header/raymath.h"
 
 namespace Asteroids
@@ -7,32 +8,41 @@ namespace Asteroids
 	{
 		Spaceship player;
 
+		Texture2D spaceshipTexture = LoadTexture("assets/magiccat.png");
+
 		player.position = position;
 		player.velocity = { 0, 0 };
+		player.dest = { position.x, position.y, static_cast<float>(spaceshipTexture.width) * player.scale, static_cast<float>(spaceshipTexture.height) * player.scale};
+		player.texture = spaceshipTexture;
 		
 		return player;
 	}
 
 	void SpaceshipMovement(Spaceship& player, Rectangle& spaceship, Vector2& origin, Vector2& mousePos, float& angle, int screenWidth, int screenHeight)
 	{
-		spaceship.x = player.position.x;
-		spaceship.y = player.position.y;
-		spaceship.width = 20;
-		spaceship.height = 20;
+		player.dest.x = player.position.x;
+		player.dest.y = player.position.y;
+
+		spaceship.width = static_cast<float>(player.texture.width);
+		spaceship.height = static_cast<float>(player.texture.height);
+		spaceship.x = 0;
+		spaceship.y = 0;
 
 		origin = { spaceship.width / 2, spaceship.height / 2 };
 
 		mousePos = GetMousePosition();
 
-		angle = static_cast<float>(atan2(static_cast<double>(player.direction.y), static_cast<double>(player.direction.x)) * RAD2DEG + 90.0f);
+		angle = static_cast<float>(atan2(static_cast<double>(player.direction.y), static_cast<double>(player.direction.x)) * RAD2DEG /*+ 90.0f*/);
+
+		float accelerationBoost = 2.0f;
 
 		player.direction = Vector2Normalize(Vector2Subtract(mousePos, player.position));
 		player.position = Vector2Add(player.position, Vector2Scale(player.velocity, GetFrameTime()));
 
 		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
 		{
-			player.velocity.x += player.direction.x * player.acceleration.x * GetFrameTime();
-			player.velocity.y += player.direction.y * player.acceleration.y * GetFrameTime();
+			player.velocity.x += player.direction.x * player.acceleration.x * accelerationBoost * GetFrameTime();
+			player.velocity.y += player.direction.y * player.acceleration.y * accelerationBoost * GetFrameTime();
 		}
 
 		//if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -43,9 +53,11 @@ namespace Asteroids
 		SpaceshipReturnToScreen(player, screenWidth, screenHeight);
 	}
 
-	void SpaceshipDrawing(Rectangle spaceship, Vector2 origin, float angle)
+	void PlayerDrawing(Spaceship player, Rectangle source, float angle)
 	{
-		DrawRectanglePro(spaceship, origin, angle, PINK);
+		Vector2 origin = { (player.dest.width) / 2, (player.dest.height) / 2 };
+		DrawCircleLines((int)player.dest.x, (int)player.dest.y, player.radius, RED);
+		DrawTexturePro(player.texture, source, player.dest, origin, angle, RAYWHITE);
 	}
 
 	void SpaceshipReturnToScreen(Spaceship& player, int screenWidth, int screenHeight)
