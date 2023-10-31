@@ -3,21 +3,19 @@
 
 namespace Asteroids
 {
-	static const float PROJECTILE_SPEED = 400.0f;
-	static const float PROJECTILE_LIFE = 2.0f;
-	static const float PROJECTILE_WIDTH = 10.0f;
-	static const float PROJECTILE_HEIGHT = 30.0f;
-	
 	struct Projectile
 	{
 		bool isActive;
 		Vector2 position;
-		float rotation;
-		float creationTime;
+		Vector2 direction;
+		float radius = 7.0f;
+		float speed = 450.0f;
+		float timeAlive = 2.0f;
+		float currentTime = 0;
 	};
 
-	Projectile CreateProjectile(Vector2 position, float rotation);
+	Projectile CreateProjectile(Vector2 position, Vector2 direction);
 	void ProjectileUpdate(Projectile& projectile);
-	void ProjectileDraw(Projectile projectile);
+	void ProjectileDraw(Projectile& projectile);
 
 }

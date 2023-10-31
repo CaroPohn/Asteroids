@@ -1,12 +1,12 @@
 #include "Game/Play.h"
 
 #include "header/raymath.h"
+
 #include "Objects/Spaceship.h"
-#include "Objects/Projectile.h"
 
 namespace Asteroids
 {
-	Vector2 playerInitPosition = { (1024.0f / 2.0f), ( 768.0f / 2.0f) }; //Arreglar
+	Spaceship player;
 
 	static const int MAX_ASTEROIDS = 10;
 	static const int MAX_PROJECTILES = 20;
@@ -21,10 +21,11 @@ namespace Asteroids
 	Rectangle spaceship;
 	Vector2 origin;
 
-	Spaceship player;
+	static bool isPaused = false;
 
 	void Init()
 	{
+		Vector2 playerInitPosition = { static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2) };
 		player = InitSpaceship(playerInitPosition);
 	}
 
@@ -34,19 +35,15 @@ namespace Asteroids
 
 		scene = scene; //esto no va despues
 		
-		for (int i = 0; i < MAX_ASTEROIDS; i++)
-		{
-			AsteroidUpdate(asteroidsArr[i]);
-		}
+		UpdateAsteroidArray();
 
-		if (GetTime() > lastAsteroidCreationTime + ASTEROID_DELAY)
-		{
-			AsteroidSize nextSize = asteroidSizes[GetRandomValue(0, 2)];
-			AddAsteroid(GetNextAsteroidPosition(), nextSize);
-			lastAsteroidCreationTime = static_cast<float>(GetTime());
-		}
+		AsteroidsCreation();
+
+		CheckShottingInput();
 
 		SpaceshipMovement(player, spaceship, origin, mousePos, angle, GetScreenWidth(), GetScreenHeight());
+
+		UpdateProjectileArray();
 	}
 
 	void Drawing()
@@ -55,12 +52,12 @@ namespace Asteroids
 
 		ClearBackground(BLACK);
 
-		for (int i = 0; i < MAX_ASTEROIDS; i++)
-		{
-			AsteroidDraw(asteroidsArr[i]);
-		}
+		DrawAsteroidArray();
 
 		DrawCircle(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y), 5, BLUE); //cursor
+
+		DrawProjectileArray();
+
 		PlayerDrawing(player, spaceship, angle);
 
 		EndDrawing();
@@ -84,6 +81,16 @@ namespace Asteroids
 
 			asteroidsArr[i] = InitAsteroid(position, velocity, size);
 			break;
+		}
+	}
+
+	void AsteroidsCreation()
+	{
+		if (GetTime() > lastAsteroidCreationTime + ASTEROID_DELAY)
+		{
+			AsteroidSize nextSize = asteroidSizes[GetRandomValue(0, 2)];
+			AddAsteroid(GetNextAsteroidPosition(), nextSize);
+			lastAsteroidCreationTime = static_cast<float>(GetTime());
 		}
 	}
 
@@ -114,7 +121,23 @@ namespace Asteroids
 		return result;
 	}
 
-	void AddProjectile(Vector2 position, float rotation)
+	void UpdateAsteroidArray()
+	{
+		for (int i = 0; i < MAX_ASTEROIDS; i++)
+		{
+			AsteroidUpdate(asteroidsArr[i]);
+		}
+	}
+
+	void DrawAsteroidArray()
+	{
+		for (int i = 0; i < MAX_ASTEROIDS; i++)
+		{
+			AsteroidDraw(asteroidsArr[i]);
+		}
+	}
+
+	void AddProjectile(Vector2 position)
 	{
 		for (int i = 0; i < MAX_PROJECTILES; i++)
 		{
@@ -123,8 +146,32 @@ namespace Asteroids
 				continue;
 			}
 
-			projectiles[i] = CreateProjectile(position, rotation);
+			projectiles[i] = CreateProjectile(position, player.direction);
 			break;
+		}
+	}
+
+	void CheckShottingInput()
+	{
+		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+		{
+			AddProjectile(Vector2Add(player.position, player.direction));
+		}
+	}
+
+	void UpdateProjectileArray()
+	{
+		for (int i = 0; i < MAX_PROJECTILES; i++)
+		{
+			ProjectileUpdate(projectiles[i]);
+		}
+	}
+
+	void DrawProjectileArray()
+	{
+		for (int i = 0; i < MAX_PROJECTILES; i++)
+		{
+			ProjectileDraw(projectiles[i]);
 		}
 	}
 
@@ -138,4 +185,5 @@ namespace Asteroids
 		Update(scene);
 		Drawing();
 	}
+
 }

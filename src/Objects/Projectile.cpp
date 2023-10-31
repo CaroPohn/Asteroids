@@ -1,17 +1,15 @@
 #include "Projectile.h"
 
-#include <cmath>
 
 namespace Asteroids
 {
-    Projectile CreateProjectile(Vector2 position, float rotation)
+    Projectile CreateProjectile(Vector2 position, Vector2 direction)
     {
         Projectile projectile;
 
         projectile.isActive = true;
         projectile.position = position;
-        projectile.rotation = rotation;
-        projectile.creationTime = static_cast<float>(GetTime());
+        projectile.direction = direction;
 
         return projectile;
     }
@@ -21,21 +19,23 @@ namespace Asteroids
         if (!projectile.isActive)
             return;
 
-        if (GetTime() > projectile.creationTime + PROJECTILE_LIFE)
+        projectile.currentTime += GetFrameTime();
+
+        if (projectile.currentTime > projectile.timeAlive)
         {
             projectile.isActive = false;
             return;
         }
 
-        projectile.position.x = PROJECTILE_SPEED * cos(projectile.rotation) * GetFrameTime();
-        projectile.position.y = PROJECTILE_SPEED * sin(projectile.rotation) * GetFrameTime();
+        projectile.position.x += projectile.speed * projectile.direction.x * GetFrameTime();
+        projectile.position.y += projectile.speed * projectile.direction.y * GetFrameTime();
     }
 
-    void ProjectileDraw(Projectile projectile)
+    void ProjectileDraw(Projectile& projectile)
     {
-        Rectangle rect = { projectile.position.x, projectile.position.y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT };
-        Vector2 origin = { rect.width / 2, rect.height / 2 };
-        DrawRectanglePro(rect, origin, projectile.rotation, RED);
+        if (projectile.isActive)
+        {
+            DrawCircle(static_cast<int>(projectile.position.x), static_cast<int>(projectile.position.y), projectile.radius, RED);
+        }
     }
-
 }
