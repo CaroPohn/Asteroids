@@ -8,20 +8,20 @@ namespace Asteroids
 {
 	Texture2D creditsTexture;
 
-	static Button backMenuButton;
-	Texture2D backMenuButtonTexture;
+	static Button backMenuCreditsButton;
+	Texture2D backMenuCreditsButtonTexture;
 
 	void InitCredits()
 	{
 		creditsTexture = LoadTexture("assets/credits.png");
-		backMenuButtonTexture = LoadTexture("assets/backmenubutton.png");
+		backMenuCreditsButtonTexture = LoadTexture("assets/backmenubutton.png");
 
-		const float buttonWidth = static_cast<float>(backMenuButtonTexture.width);
-		const float buttonHeight = static_cast<float>(backMenuButtonTexture.height);
+		const float buttonWidth = static_cast<float>(backMenuCreditsButtonTexture.width);
+		const float buttonHeight = static_cast<float>(backMenuCreditsButtonTexture.height);
 		float buttonXPos = static_cast<float>(GetScreenWidth()) - buttonWidth - 10;
 		float buttonYPos = static_cast<float>(GetScreenHeight()) - buttonHeight - 10;
 
-		InitButton(backMenuButton, backMenuButtonTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+		InitButton(backMenuCreditsButton, backMenuCreditsButtonTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
 	}
 
 	void DrawCredits()
@@ -29,24 +29,24 @@ namespace Asteroids
 		BeginDrawing();
 
 		DrawTexture(creditsTexture, 0, 0, RAYWHITE);
-		DrawButton(backMenuButton);
+		DrawButton(backMenuCreditsButton);
 
 		EndDrawing();
 	}
 
 	void CreditsInput(Scenes& scene)
 	{
-		if (CheckCollisionButtonMouse(GetMousePosition(), backMenuButton))
+		if (CheckCollisionButtonMouse(GetMousePosition(), backMenuCreditsButton))
 		{
-			backMenuButton.isSelected = true;
+			backMenuCreditsButton.isSelected = true;
 
-			if (CheckMouseInput(backMenuButton))
+			if (CheckMouseInput(backMenuCreditsButton))
 			{
 				scene = Scenes::Menu;
 			}
 		}
 		else
-			backMenuButton.isSelected = false;
+			backMenuCreditsButton.isSelected = false;
 	}
 
 	void RunCredits(Scenes& scene, bool isNewScene)
