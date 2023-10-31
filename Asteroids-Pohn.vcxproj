@@ -99,9 +99,11 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game\Credits.cpp" />
     <ClCompile Include="src\Game\GameLoop.cpp" />
     <ClCompile Include="src\Game\Menu.cpp" />
     <ClCompile Include="src\Game\Play.cpp" />
+    <ClCompile Include="src\Game\Rules.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\Asteroid.cpp" />
     <ClCompile Include="src\Objects\Button.cpp" />
@@ -109,9 +111,11 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClCompile Include="src\Objects\Spaceship.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game\Credits.h" />
     <ClInclude Include="src\Game\GameLoop.h" />
     <ClInclude Include="src\Game\Menu.h" />
     <ClInclude Include="src\Game\Play.h" />
+    <ClInclude Include="src\Game\Rules.h" />
     <ClInclude Include="src\Game\Scenes.h" />
     <ClInclude Include="src\Objects\Asteroid.h" />
     <ClInclude Include="src\Objects\Button.h" />

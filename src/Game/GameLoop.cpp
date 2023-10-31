@@ -5,6 +5,7 @@
 #include "Scenes.h"
 #include "Game/Menu.h"
 #include "Play.h"
+#include "Game/Credits.h"
 
 namespace Asteroids
 {
@@ -16,6 +17,7 @@ namespace Asteroids
 		const int screenHeight = 768;
 
 		InitWindow(screenWidth, screenHeight, "Asteroids");
+		SetExitKey(NULL);
 
 		scene = Scenes::Menu;
 		Scenes previousScene = Scenes::Exit;
@@ -43,9 +45,7 @@ namespace Asteroids
 				break;
 
 			case Scenes::Credits:
-				break;
-
-			case Scenes::WinScreen:
+				RunCredits(scene, isNewScene);
 				break;
 
 			case Scenes::LoseScreen:
