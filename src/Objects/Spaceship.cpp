@@ -32,7 +32,7 @@ namespace Asteroids
 
 		mousePos = GetMousePosition();
 
-		angle = static_cast<float>(atan2(static_cast<double>(player.direction.y), static_cast<double>(player.direction.x)) * RAD2DEG /*+ 90.0f*/);
+		angle = static_cast<float>(atan2(static_cast<double>(player.direction.y), static_cast<double>(player.direction.x)) * RAD2DEG);
 
 		float accelerationBoost = 2.0f;
 
@@ -44,11 +44,6 @@ namespace Asteroids
 			player.velocity.x += player.direction.x * player.acceleration.x * accelerationBoost * GetFrameTime();
 			player.velocity.y += player.direction.y * player.acceleration.y * accelerationBoost * GetFrameTime();
 		}
-
-		//if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-		//{
-
-		//}
 
 		SpaceshipReturnToScreen(player, screenWidth, screenHeight);
 	}
