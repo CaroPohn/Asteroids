@@ -6,6 +6,7 @@
 #include "Game/Menu.h"
 #include "Play.h"
 #include "Game/Credits.h"
+#include "Game/Rules.h"
 
 namespace Asteroids
 {
@@ -42,6 +43,7 @@ namespace Asteroids
 				break;
 
 			case Scenes::Rules:
+				RunRules(scene, isNewScene);
 				break;
 
 			case Scenes::Credits:
