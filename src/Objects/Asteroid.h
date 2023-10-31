@@ -11,7 +11,6 @@ namespace Asteroids
 
 	static const int ASTEROID_RANDOM_ANGLE = static_cast<int>(30 * DEG2RAD);
 
-	static const float ASTEROID_LIFE = 10.0f;
 	static const float ASTEROID_DELAY = 0.75f;
 	static float lastAsteroidCreationTime = -1.0f;
 	

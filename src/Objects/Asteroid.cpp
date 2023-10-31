@@ -27,12 +27,6 @@ namespace Asteroids
 			return;
 		}
 
-		//if (GetTime() > asteroid.creationTime + ASTEROID_LIFE)
-		//{
-		//	asteroid.isActive = false;
-		//	return;
-		//}
-
 		AsteroidsReturnToScreen(asteroid, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()));
 		
 		asteroid.position = Vector2Add(asteroid.position, Vector2Scale(asteroid.velocity, GetFrameTime()));
@@ -49,13 +43,13 @@ namespace Asteroids
 		float asteroidRadius = 0;
 
 		if (asteroid.size & Small)
-			asteroidRadius = 16;
+			asteroidRadius = 12;
 		else if (asteroid.size & Medium)
-			asteroidRadius = 32;
+			asteroidRadius = 24;
 		else if (asteroid.size & Large)
-			asteroidRadius = 64;
+			asteroidRadius = 48;
 
-		DrawPolyLines(asteroid.position, 3, asteroidRadius, asteroid.rotation, WHITE);
+		DrawCircleLines(static_cast<int>(asteroid.position.x), static_cast<int>(asteroid.position.y), asteroidRadius, WHITE);
 	}
 
 	void AsteroidsReturnToScreen(Asteroid& asteroid, float screenWidth, float screenHeight)
