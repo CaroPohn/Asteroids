@@ -13,6 +13,8 @@ namespace Asteroids
 		Rectangle dest = { 0, 0, 85, 50 };
 		float scale = 0.35f;
 		float radius = 50.0f;
+		int lives = 3;
+		bool isAlive = true;
 	};
 
 	Spaceship InitSpaceship(Vector2 position);
