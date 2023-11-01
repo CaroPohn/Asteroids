@@ -28,6 +28,7 @@ namespace Asteroids
 	void BulletAsteroidCollision();
 	void SpecialEnemyBulletCollision();
 	void SpecialEnemyPlayerCollision();
+	void PlayerPowerUpCollision();
 	void PlayerLoses(Scenes& scene);
 	void RunGame(Scenes& scene, bool isNewScene, Scenes previousScene);
 }

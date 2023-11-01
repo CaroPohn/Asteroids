@@ -6,6 +6,7 @@
 #include "Game/Pause.h"
 #include "Objects/Button.h"
 #include "Objects/SpecialEnemy.h"
+#include "Objects/PowerUp.h"
 
 namespace Asteroids
 {
@@ -14,6 +15,7 @@ namespace Asteroids
 	static int asteroidsCounter = 0;
 
 	SpecialEnemy specialEnemy;
+	PowerUp powerUp;
 
 	static const int MAX_ASTEROIDS = 16;
 	static const int MAX_PROJECTILES = 20;
@@ -79,6 +81,8 @@ namespace Asteroids
 
 		SpecialEnemyUpdate(specialEnemy, player);
 
+		PowerUpController(powerUp);
+
 		PlayerLoses(scene);
 	}
 
@@ -95,6 +99,8 @@ namespace Asteroids
 		DrawProjectileArray();
 
 		SpecialEnemyDraw(specialEnemy);
+
+		DrawPowerUp(powerUp);
 
 		PlayerDrawing(player, spaceship, angle);
 
@@ -277,6 +283,7 @@ namespace Asteroids
 
 		BulletAsteroidCollision();
 		SpecialEnemyBulletCollision();
+		PlayerPowerUpCollision();
 	}
 
 	void AsteroidPlayerCollision()
@@ -368,6 +375,18 @@ namespace Asteroids
 		if (player.lives <= 0)
 		{
 			player.isAlive = false;
+		}
+	}
+
+	void PlayerPowerUpCollision()
+	{
+		if (CircleCircleCollision(player.position.x, player.position.y, player.radius, powerUp.position.x, powerUp.position.y, powerUp.radius))
+		{
+			if (player.lives < 3 && powerUp.isActive)
+			{
+				player.lives++;
+				powerUp.isActive = false;
+			}
 		}
 	}
 
