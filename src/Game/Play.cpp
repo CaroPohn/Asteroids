@@ -5,6 +5,7 @@
 #include "Objects/Spaceship.h"
 #include "Game/Pause.h"
 #include "Objects/Button.h"
+#include "Objects/SpecialEnemy.h"
 
 namespace Asteroids
 {
@@ -12,7 +13,9 @@ namespace Asteroids
 	static float invulnerabilityTimer = 0;
 	static int asteroidsCounter = 0;
 
-	static const int MAX_ASTEROIDS = 32;
+	SpecialEnemy specialEnemy;
+
+	static const int MAX_ASTEROIDS = 16;
 	static const int MAX_PROJECTILES = 20;
 
 	Asteroid static asteroidsArr[MAX_ASTEROIDS] = { 0 };
@@ -37,6 +40,8 @@ namespace Asteroids
 		const float buttonHeight = static_cast<float>(pauseButtonTexture.height);
 		float buttonXPos = 20;
 		float buttonYPos = static_cast<float>(GetScreenHeight()) - buttonHeight - 10;
+
+		specialEnemy = InitSpecialEnemy(GetNextPosition(), player);
 
 		InitButton(pauseButton, pauseButtonTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
 
@@ -71,6 +76,10 @@ namespace Asteroids
 		UpdateProjectileArray();
 
 		CheckGameCollisions();
+
+		SpecialEnemyUpdate(specialEnemy, player);
+
+		PlayerLoses(scene);
 	}
 
 	void Drawing()
@@ -85,11 +94,15 @@ namespace Asteroids
 
 		DrawProjectileArray();
 
+		SpecialEnemyDraw(specialEnemy);
+
 		PlayerDrawing(player, spaceship, angle);
 
 		DrawButton(pauseButton);
 
 		DrawScore();
+
+		DrawLives(player);
 
 		EndDrawing();
 	}
@@ -153,12 +166,12 @@ namespace Asteroids
 		if (GetTime() > lastAsteroidCreationTime + ASTEROID_DELAY && asteroidsCounter < MAX_ASTEROIDS / 4)
 		{
 			AsteroidSize nextSize = asteroidSizes[GetRandomValue(0, 2)];
-			AddAsteroid(GetNextAsteroidPosition(), nextSize, true);
+			AddAsteroid(GetNextPosition(), nextSize, true);
 			lastAsteroidCreationTime = static_cast<float>(GetTime());
 		}
 	}
 
-	Vector2 GetNextAsteroidPosition()
+	Vector2 GetNextPosition()
 	{
 		float offscreenDist = 128.0f;
 		Vector2 result = { -offscreenDist, -offscreenDist };
@@ -255,6 +268,7 @@ namespace Asteroids
 		if (invulnerabilityTimer <= 0)
 		{
 			AsteroidPlayerCollision();
+			SpecialEnemyPlayerCollision();
 		}
 		else
 		{
@@ -262,6 +276,7 @@ namespace Asteroids
 		}
 
 		BulletAsteroidCollision();
+		SpecialEnemyBulletCollision();
 	}
 
 	void AsteroidPlayerCollision()
@@ -273,7 +288,7 @@ namespace Asteroids
 			if (CircleCircleCollision(player.position.x, player.position.y, player.radius, asteroidsArr[i].position.x, asteroidsArr[i].position.y, asteroidsArr[i].asteroidRadius))
 			{
 				player.lives--;
-				invulnerabilityTimer = 2.0f;
+				invulnerabilityTimer = 1.0f;
 			}
 		}
 
@@ -319,29 +334,40 @@ namespace Asteroids
 
 				if (CircleCircleCollision(projectiles[j].position.x, projectiles[j].position.y, projectiles[j].radius, asteroidsArr[i].position.x, asteroidsArr[i].position.y, asteroidsArr[i].asteroidRadius))
 				{
-				/*	asteroidsArr[i].isActive = false;
-
-					switch (asteroidsArr[i].size)
-					{
-					case Large:
-						AddAsteroid(asteroidsArr[i].position, Medium);
-						AddAsteroid(asteroidsArr[i].position, Medium);
-						break;
-
-					case Medium:
-						AddAsteroid(asteroidsArr[i].position, Small);
-						AddAsteroid(asteroidsArr[i].position, Small);
-						break;
-
-					case Small:
-						asteroidsArr[i].isActive = false;
-						break;
-					}*/
-
 					ReduceAsteroidSize(asteroidsArr[i]);
 					projectiles[j].isActive = false;
 				}
 			}
+		}
+	}
+
+	void SpecialEnemyBulletCollision()
+	{
+		for (int i = 0; i < MAX_PROJECTILES; i++) 
+		{
+			if (!projectiles[i].isActive) continue;
+
+			if (CircleCircleCollision(projectiles[i].position.x, projectiles[i].position.y, projectiles[i].radius, specialEnemy.position.x, specialEnemy.position.y, specialEnemy.radius))
+			{
+				player.points += 20;
+				specialEnemy.isActive = false;
+				projectiles[i].isActive = false;
+				specialEnemy = InitSpecialEnemy(GetNextPosition(), player);
+			}
+		}
+	}
+
+	void SpecialEnemyPlayerCollision()
+	{
+		if (CircleCircleCollision(player.position.x, player.position.y, player.radius, specialEnemy.position.x, specialEnemy.position.y, specialEnemy.radius))
+		{
+			player.lives--;
+			invulnerabilityTimer = 1.0f;
+		}
+
+		if (player.lives <= 0)
+		{
+			player.isAlive = false;
 		}
 	}
 

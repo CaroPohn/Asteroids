@@ -14,7 +14,7 @@ namespace Asteroids
 	void CheckPauseInput(Scenes& scene);
 	void AddAsteroid(Vector2 position, AsteroidSize size, bool isSpawned);
 	void AsteroidsCreation();
-	Vector2 GetNextAsteroidPosition();
+	Vector2 GetNextPosition();
 	void UpdateAsteroidArray();
 	void DrawAsteroidArray();
 	void AddProjectile(Vector2 position);
@@ -26,6 +26,8 @@ namespace Asteroids
 	void AsteroidPlayerCollision();
 	void ReduceAsteroidSize(Asteroid& asteroid);
 	void BulletAsteroidCollision();
+	void SpecialEnemyBulletCollision();
+	void SpecialEnemyPlayerCollision();
 	void PlayerLoses(Scenes& scene);
 	void RunGame(Scenes& scene, bool isNewScene, Scenes previousScene);
 }
