@@ -21,6 +21,7 @@ namespace Asteroids
 
 		InitWindow(screenWidth, screenHeight, "Asteroids");
 		SetExitKey(NULL);
+		InitAudioDevice();
 
 		scene = Scenes::Menu;
 		Scenes previousScene = Scenes::Exit;
@@ -71,6 +72,7 @@ namespace Asteroids
 			}
 		} while (!WindowShouldClose() && scene != Scenes::Exit);
 
+		CloseAudioDevice();
 		CloseWindow();
 	}
 }
