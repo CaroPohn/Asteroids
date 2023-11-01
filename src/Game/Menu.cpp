@@ -8,15 +8,24 @@ namespace Asteroids
 	Texture2D creditsButtonTexture;
 	Texture2D exitButtonTexture;
 
+	Texture2D playButtonPressedTexture;
+	Texture2D rulesButtonPressedTexture;
+	Texture2D creditsButtonPressedTexture;
+	Texture2D exitButtonPressedTexture;
+
 	static Button playButton;
 	static Button rulesButton;
 	static Button creditsButton;
 	static Button exitButton;
 
+	Music menuMusic;
+
 	void InitMenu()
 	{
 		backTexture = LoadTexture("assets/backmenu.png");
 		InitMenuButtons();
+
+		menuMusic = LoadMusicStream("assets/menumusic.mp3");
 	}
 
 	void InitMenuButtons()
@@ -25,6 +34,11 @@ namespace Asteroids
 		rulesButtonTexture = LoadTexture("assets/rulesbutton.png");
 		creditsButtonTexture = LoadTexture("assets/creditsbutton.png");
 		exitButtonTexture = LoadTexture("assets/exitbutton.png");
+
+		playButtonPressedTexture = LoadTexture("assets/playbuttonpressed.png");
+		rulesButtonPressedTexture = LoadTexture("assets/rulesbuttonpressed.png");
+		creditsButtonPressedTexture = LoadTexture("assets/creditsbuttonpressed.png");
+		exitButtonPressedTexture = LoadTexture("assets/exitbuttonpressed.png");
 
 		const float buttonWidth = static_cast<float>(playButtonTexture.width);
 		const float buttonHeight = static_cast<float>(playButtonTexture.height);
@@ -38,10 +52,10 @@ namespace Asteroids
 
 		Color buttonColor = RAYWHITE;
 
-		InitButton(playButton, playButtonTexture, buttonXPos, playButtonY, buttonWidth, buttonHeight, buttonColor);
-		InitButton(rulesButton, rulesButtonTexture, buttonXPos, rulesButtonY, buttonWidth, buttonHeight, buttonColor);
-		InitButton(creditsButton, creditsButtonTexture, buttonXPos, creditsButtonY, buttonWidth, buttonHeight,buttonColor);
-		InitButton(exitButton, exitButtonTexture, buttonXPos, exitButtonY, buttonWidth, buttonHeight, buttonColor);
+		InitButton(playButton, playButtonTexture, playButtonPressedTexture, buttonXPos, playButtonY, buttonWidth, buttonHeight, buttonColor);
+		InitButton(rulesButton, rulesButtonTexture, rulesButtonPressedTexture, buttonXPos, rulesButtonY, buttonWidth, buttonHeight, buttonColor);
+		InitButton(creditsButton, creditsButtonTexture, creditsButtonPressedTexture, buttonXPos, creditsButtonY, buttonWidth, buttonHeight,buttonColor);
+		InitButton(exitButton, exitButtonTexture, exitButtonPressedTexture, buttonXPos, exitButtonY, buttonWidth, buttonHeight, buttonColor);
 	}
 
 	void DrawMenu()
@@ -64,6 +78,7 @@ namespace Asteroids
 
 			if (CheckMouseInput(playButton))
 			{
+				StopMusicStream(menuMusic);
 				scene = Scenes::Play;
 			}
 		}
@@ -104,13 +119,20 @@ namespace Asteroids
 			exitButton.isSelected = false;
 	}
 
+	void UpdateMenuMusic()
+	{
+		PlayMusicStream(menuMusic);
+		UpdateMusicStream(menuMusic);
+	}
+
 	void RunMenu(Scenes& scene, bool isNewScene)
 	{
 		if (isNewScene)
 		{
 			InitMenu();
 		}
-
+		
+		UpdateMenuMusic();
 		MenuInput(scene);
 		DrawMenu();
 	}

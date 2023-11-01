@@ -8,5 +8,6 @@ namespace Asteroids
 	void InitMenuButtons();
 	void DrawMenu();
 	void MenuInput(Scenes& scene);
+	void UpdateMenuMusic();
 	void RunMenu(Scenes& scene, bool isNewScene);
 }
