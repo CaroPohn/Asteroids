@@ -9,20 +9,27 @@ namespace Asteroids
 	{
 		Asteroid asteroid;
 
+		Texture2D smallTexture = LoadTexture("assets/catsoul.png");
+		Texture2D mediumTexture = LoadTexture("assets/catghost.png");
+		Texture2D largeTexture = LoadTexture("assets/cattomb.png");
+
 		asteroid.isActive = true;
 		asteroid.size = size;
 
 		if (asteroid.size == Small)
 		{
-			asteroid.asteroidRadius = 12;
+			asteroid.asteroidRadius = 20;
+			asteroid.texture = smallTexture;
 		}
 		else if (asteroid.size == Medium)
 		{
-			asteroid.asteroidRadius = 24;
+			asteroid.asteroidRadius = 30;
+			asteroid.texture = mediumTexture;
 		}
 		else if (asteroid.size == Large)
 		{
-			asteroid.asteroidRadius = 48;
+			asteroid.asteroidRadius = 46;
+			asteroid.texture = largeTexture;
 		}
 
 		asteroid.position = position;
@@ -47,14 +54,29 @@ namespace Asteroids
 		asteroid.rotation += asteroid.rotationSpeed * GetFrameTime();
 	}
 
-	void AsteroidDraw(Asteroid asteroid)
+	void AsteroidDraw(Asteroid& asteroid)
 	{
 		if (!asteroid.isActive)
 		{
 			return;
 		}
 
+		float asteroidScale = 0.25f;
+
+		asteroid.dest.x = asteroid.position.x;
+		asteroid.dest.y = asteroid.position.y;
+		asteroid.dest.width = static_cast<float>(asteroid.texture.width) * asteroidScale;
+		asteroid.dest.height = static_cast<float>(asteroid.texture.height) * asteroidScale;
+		
+		asteroid.source.width = static_cast<float>(asteroid.texture.width);
+		asteroid.source.height = static_cast<float>(asteroid.texture.height);
+		asteroid.source.x = 0;
+		asteroid.source.y = 0;
+
+		Vector2 origin = { asteroid.dest.width / 2, asteroid.dest.height / 2 };
+
 		DrawCircleLines(static_cast<int>(asteroid.position.x), static_cast<int>(asteroid.position.y), asteroid.asteroidRadius, WHITE);
+		DrawTexturePro(asteroid.texture, asteroid.source, asteroid.dest, origin, asteroid.rotation, RAYWHITE);
 	}
 
 	void AsteroidsReturnToScreen(Asteroid& asteroid, float screenWidth, float screenHeight)

@@ -31,11 +31,13 @@ namespace Asteroids
 		float creationTime;
 		Vector2 velocity;
 		float asteroidRadius;
-		Texture2D texture;
+		Texture2D texture; 
+		Rectangle dest = { 0, 0, 85, 50 };
+		Rectangle source;
 	};
 
 	Asteroid InitAsteroid(Vector2 position, Vector2 velocity, AsteroidSize size);
 	void AsteroidUpdate(Asteroid& asteroid);
-	void AsteroidDraw(Asteroid asteroid);
+	void AsteroidDraw(Asteroid& asteroid);
 	void AsteroidsReturnToScreen(Asteroid& asteroid, float screenWidth, float screenHeight);
 }
