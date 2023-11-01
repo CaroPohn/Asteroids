@@ -4,7 +4,7 @@
 namespace Asteroids
 {
 	static const int MIN_ROT_SPEED = 5;
-	static const int MAX_ROT_SPEED = 240;
+	static const int MAX_ROT_SPEED = 30;
 
 	static const int ASTEROID_MIN_SPEED = 60;
 	static const int ASTEROID_MAX_SPEED = 80;

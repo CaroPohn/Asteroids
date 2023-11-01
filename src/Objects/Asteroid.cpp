@@ -18,7 +18,7 @@ namespace Asteroids
 
 		if (asteroid.size == Small)
 		{
-			asteroid.asteroidRadius = 20;
+			asteroid.asteroidRadius = 25;
 			asteroid.texture = smallTexture;
 		}
 		else if (asteroid.size == Medium)
@@ -51,7 +51,7 @@ namespace Asteroids
 		AsteroidsReturnToScreen(asteroid, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()));
 		
 		asteroid.position = Vector2Add(asteroid.position, Vector2Scale(asteroid.velocity, GetFrameTime()));
-		asteroid.rotation += asteroid.rotationSpeed * GetFrameTime();
+		asteroid.rotation = static_cast<float>(atan2(asteroid.velocity.y, asteroid.velocity.x) * RAD2DEG - 90.0f);
 	}
 
 	void AsteroidDraw(Asteroid& asteroid)
