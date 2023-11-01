@@ -15,6 +15,7 @@ namespace Asteroids
 		float radius = 50.0f;
 		int lives = 3;
 		bool isAlive = true;
+		int points;
 	};
 
 	Spaceship InitSpaceship(Vector2 position);

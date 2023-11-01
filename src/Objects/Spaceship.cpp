@@ -9,11 +9,13 @@ namespace Asteroids
 		Spaceship player;
 
 		Texture2D spaceshipTexture = LoadTexture("assets/magiccat.png");
+		Texture2D livesTexture = LoadTexture("assets/magiccat.png");
 
 		player.position = position;
 		player.velocity = { 0, 0 };
 		player.dest = { position.x, position.y, static_cast<float>(spaceshipTexture.width) * player.scale, static_cast<float>(spaceshipTexture.height) * player.scale};
 		player.texture = spaceshipTexture;
+		player.points = 0;
 		
 		return player;
 	}

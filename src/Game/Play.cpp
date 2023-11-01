@@ -89,7 +89,21 @@ namespace Asteroids
 
 		DrawButton(pauseButton);
 
+		DrawScore();
+
 		EndDrawing();
+	}
+
+	void DrawScore()
+	{
+		int posX = 10;
+		int posY = 10;
+		int fontSize = 35;
+		int xWordDistance = 120;
+		Color color = RAYWHITE;
+
+		DrawText("Points: ", posX, posY, fontSize, color);
+		DrawText(TextFormat("%i", player.points), posX + xWordDistance, posY, fontSize, color);
 	}
 
 	void CheckPauseInput(Scenes& scene)
@@ -274,6 +288,7 @@ namespace Asteroids
 	{
 		asteroid.isActive = false;
 		asteroidsCounter--;
+		player.points += 10;
 
 		switch (asteroid.size)
 		{
