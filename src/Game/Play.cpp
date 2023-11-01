@@ -10,6 +10,8 @@
 
 namespace Asteroids
 {
+	Texture2D gameBackground;
+
 	Spaceship player;
 	static float invulnerabilityTimer = 0;
 	static int asteroidsCounter = 0;
@@ -31,13 +33,18 @@ namespace Asteroids
 	Vector2 origin;
 
 	static Button pauseButton;
+	static Button pauseButtonPressed;
 
 	void Init()
 	{
 		Vector2 playerInitPosition = { static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2) };
 		player = InitSpaceship(playerInitPosition);
 
+		gameBackground = LoadTexture("assets/gameback.png");
+
 		Texture2D pauseButtonTexture = LoadTexture("assets/pausebutton.png");
+		Texture2D pauseButtonPressedTexture = LoadTexture("assets/pausebuttonpressed.png");
+
 		const float buttonWidth = static_cast<float>(pauseButtonTexture.width);
 		const float buttonHeight = static_cast<float>(pauseButtonTexture.height);
 		float buttonXPos = 20;
@@ -45,7 +52,7 @@ namespace Asteroids
 
 		specialEnemy = InitSpecialEnemy(GetNextPosition(), player);
 
-		InitButton(pauseButton, pauseButtonTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+		InitButton(pauseButton, pauseButtonTexture, pauseButtonPressedTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
 
 		for (int i = 0; i < MAX_ASTEROIDS; i++)
 		{
@@ -91,6 +98,8 @@ namespace Asteroids
 		BeginDrawing();
 
 		ClearBackground(BLACK);
+
+		DrawTexture(gameBackground, 0, 0, RAYWHITE);
 
 		DrawAsteroidArray();
 
@@ -356,10 +365,16 @@ namespace Asteroids
 
 			if (CircleCircleCollision(projectiles[i].position.x, projectiles[i].position.y, projectiles[i].radius, specialEnemy.position.x, specialEnemy.position.y, specialEnemy.radius))
 			{
-				player.points += 20;
-				specialEnemy.isActive = false;
+				specialEnemy.lives--;
+
+				if (specialEnemy.lives <= 0)
+				{
+					player.points += 30;
+					specialEnemy.isActive = false;
+					specialEnemy = InitSpecialEnemy(GetNextPosition(), player);
+				}
+
 				projectiles[i].isActive = false;
-				specialEnemy = InitSpecialEnemy(GetNextPosition(), player);
 			}
 		}
 	}

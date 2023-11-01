@@ -11,7 +11,9 @@ namespace Asteroids
 	static Button resumeButton;
 	static Button backMenuPauseButton;
 	Texture2D backMenuPauseButtonTexture;
+	Texture2D backMenuPauseButtonPressedTexture;
 	Texture2D resumeButtonTexture;
+	Texture2D resumeButtonPressedTexture;
 
 	void InitPause()
 	{
@@ -20,6 +22,9 @@ namespace Asteroids
 		backMenuPauseButtonTexture = LoadTexture("assets/backmenubutton.png");
 		resumeButtonTexture = LoadTexture("assets/resumebutton.png");
 
+		backMenuPauseButtonPressedTexture = LoadTexture("assets/backmenubuttonpressed.png");
+		resumeButtonPressedTexture = LoadTexture("assets/resumebuttonpressed.png");
+
 		const float buttonWidth = static_cast<float>(backMenuPauseButtonTexture.width);
 		const float buttonHeight = static_cast<float>(backMenuPauseButtonTexture.height);
 		float buttonYPos = static_cast<float>(GetScreenHeight()) / 2 - buttonHeight - 10;
@@ -27,8 +32,8 @@ namespace Asteroids
 		float backMenuPausebuttonXPos = static_cast<float>(GetScreenWidth()) / 2 - buttonWidth - 180;
 		float resumeButtonXPos = static_cast<float>(GetScreenWidth()) / 2 + buttonWidth + 40;
 
-		InitButton(backMenuPauseButton, backMenuPauseButtonTexture, backMenuPausebuttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
-		InitButton(resumeButton, resumeButtonTexture, resumeButtonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+		InitButton(backMenuPauseButton, backMenuPauseButtonTexture, backMenuPauseButtonPressedTexture, backMenuPausebuttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+		InitButton(resumeButton, resumeButtonTexture, resumeButtonPressedTexture, resumeButtonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
 	}
 
 	void DrawPause()

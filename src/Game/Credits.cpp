@@ -10,18 +10,24 @@ namespace Asteroids
 
 	static Button backMenuCreditsButton;
 	Texture2D backMenuCreditsButtonTexture;
+	Texture2D backMenuCreditsButtonPressedTexture;
+
+	Music creditsMusic;
 
 	void InitCredits()
 	{
 		creditsTexture = LoadTexture("assets/credits.png");
 		backMenuCreditsButtonTexture = LoadTexture("assets/backmenubutton.png");
+		backMenuCreditsButtonPressedTexture = LoadTexture("assets/backmenubuttonpressed.png");
 
 		const float buttonWidth = static_cast<float>(backMenuCreditsButtonTexture.width);
 		const float buttonHeight = static_cast<float>(backMenuCreditsButtonTexture.height);
 		float buttonXPos = static_cast<float>(GetScreenWidth()) - buttonWidth - 10;
 		float buttonYPos = static_cast<float>(GetScreenHeight()) - buttonHeight - 10;
 
-		InitButton(backMenuCreditsButton, backMenuCreditsButtonTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+		InitButton(backMenuCreditsButton, backMenuCreditsButtonTexture, backMenuCreditsButtonPressedTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+
+		creditsMusic = LoadMusicStream("assets/secondmenumusic.mp3");
 	}
 
 	void DrawCredits()
@@ -49,6 +55,12 @@ namespace Asteroids
 			backMenuCreditsButton.isSelected = false;
 	}
 
+	void UpdateCreditsMusic()
+	{
+		PlayMusicStream(creditsMusic);
+		UpdateMusicStream(creditsMusic);
+	}
+
 	void RunCredits(Scenes& scene, bool isNewScene)
 	{
 		if (isNewScene)
@@ -56,6 +68,7 @@ namespace Asteroids
 			InitCredits();
 		}
 	
+		UpdateCreditsMusic();
 		DrawCredits();
 		CreditsInput(scene);
 	}

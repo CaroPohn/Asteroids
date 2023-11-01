@@ -10,18 +10,20 @@ namespace Asteroids
 
 	static Button backMenuRulesButton;
 	Texture2D backMenuRulesButtonTexture;
+	Texture2D backMenuRulesButtonPressedTexture;
 
 	void InitRules()
 	{
 		rulesTexture = LoadTexture("assets/rules.png");
 		backMenuRulesButtonTexture = LoadTexture("assets/backmenubutton.png");
+		backMenuRulesButtonPressedTexture = LoadTexture("assets/backmenubuttonpressed.png");
 
 		const float buttonWidth = static_cast<float>(backMenuRulesButtonTexture.width);
 		const float buttonHeight = static_cast<float>(backMenuRulesButtonTexture.height);
 		float buttonXPos = static_cast<float>(GetScreenWidth()) - buttonWidth - 10;
 		float buttonYPos = static_cast<float>(GetScreenHeight()) - buttonHeight - 10;
 
-		InitButton(backMenuRulesButton, backMenuRulesButtonTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+		InitButton(backMenuRulesButton, backMenuRulesButtonTexture, backMenuRulesButtonPressedTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
 	}
 
 	void DrawRules()
