@@ -8,6 +8,7 @@
 #include "Game/Credits.h"
 #include "Game/Rules.h"
 #include "Game/Pause.h"
+#include "LoseScreen.h"
 
 namespace Asteroids
 {
@@ -59,6 +60,7 @@ namespace Asteroids
 				break;
 
 			case Scenes::LoseScreen:
+				RunLoseScreen(scene, isNewScene);
 				break;
 
 			case Scenes::Exit:

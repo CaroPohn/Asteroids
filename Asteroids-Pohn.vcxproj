@@ -101,6 +101,7 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
   <ItemGroup>
     <ClCompile Include="src\Game\Credits.cpp" />
     <ClCompile Include="src\Game\GameLoop.cpp" />
+    <ClCompile Include="src\Game\LoseScreen.cpp" />
     <ClCompile Include="src\Game\Menu.cpp" />
     <ClCompile Include="src\Game\Pause.cpp" />
     <ClCompile Include="src\Game\Play.cpp" />
@@ -110,10 +111,12 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClCompile Include="src\Objects\Button.cpp" />
     <ClCompile Include="src\Objects\Projectile.cpp" />
     <ClCompile Include="src\Objects\Spaceship.cpp" />
+    <ClCompile Include="src\Objects\SpecialEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game\Credits.h" />
     <ClInclude Include="src\Game\GameLoop.h" />
+    <ClInclude Include="src\Game\LoseScreen.h" />
     <ClInclude Include="src\Game\Menu.h" />
     <ClInclude Include="src\Game\Pause.h" />
     <ClInclude Include="src\Game\Play.h" />
@@ -123,6 +126,7 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClInclude Include="src\Objects\Button.h" />
     <ClInclude Include="src\Objects\Projectile.h" />
     <ClInclude Include="src\Objects\Spaceship.h" />
+    <ClInclude Include="src\Objects\SpecialEnemy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
