@@ -9,8 +9,10 @@
 namespace Asteroids
 {
 	Spaceship player;
+	static float invulnerabilityTimer = 0;
+	static int asteroidsCounter = 0;
 
-	static const int MAX_ASTEROIDS = 8;
+	static const int MAX_ASTEROIDS = 32;
 	static const int MAX_PROJECTILES = 20;
 
 	Asteroid static asteroidsArr[MAX_ASTEROIDS] = { 0 };
@@ -41,7 +43,10 @@ namespace Asteroids
 		for (int i = 0; i < MAX_ASTEROIDS; i++)
 		{
 			asteroidsArr[i].isActive = false;
+			asteroidsArr[i].size = Large;
 		}
+
+		asteroidsCounter = 0;
 
 		for (int i = 0; i < MAX_PROJECTILES; i++)
 		{
@@ -54,7 +59,7 @@ namespace Asteroids
 		HideCursor();
 
 		CheckPauseInput(scene);
-		
+
 		UpdateAsteroidArray();
 
 		AsteroidsCreation();
@@ -64,6 +69,8 @@ namespace Asteroids
 		SpaceshipMovement(player, spaceship, origin, mousePos, angle, GetScreenWidth(), GetScreenHeight());
 
 		UpdateProjectileArray();
+
+		CheckGameCollisions();
 	}
 
 	void Drawing()
@@ -100,33 +107,39 @@ namespace Asteroids
 			pauseButton.isSelected = false;
 	}
 
-	void AddAsteroid(Vector2 position, AsteroidSize size)
+	void AddAsteroid(Vector2 position, AsteroidSize size, bool isSpawned)
 	{
 		Vector2 screenCenter = { static_cast<float>(GetScreenHeight() / 2),  static_cast<float>(GetScreenWidth() / 2) };
 
 		Vector2 velocity = Vector2Subtract(screenCenter, position);
+
 		velocity = Vector2Scale(Vector2Normalize(velocity), static_cast<float>(GetRandomValue(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED)));
 
-		velocity = Vector2Rotate(velocity, static_cast<float>(GetRandomValue(-ASTEROID_RANDOM_ANGLE, ASTEROID_RANDOM_ANGLE)));
+		if (isSpawned)
+		{
+			velocity = Vector2Rotate(velocity, static_cast<float>(GetRandomValue(-ASTEROID_RANDOM_ANGLE, ASTEROID_RANDOM_ANGLE)));
+		}
+		else
+		{
+			velocity = Vector2Rotate(velocity, static_cast<float>(GetRandomValue(0, 359)));
+		}
 
 		for (int i = 0; i < MAX_ASTEROIDS; i++)
 		{
-			if (asteroidsArr[i].isActive)
-			{
-				continue;
-			}
+			if (asteroidsArr[i].isActive) continue;
 
 			asteroidsArr[i] = InitAsteroid(position, velocity, size);
+			asteroidsCounter++;
 			break;
 		}
 	}
 
 	void AsteroidsCreation()
 	{
-		if (GetTime() > lastAsteroidCreationTime + ASTEROID_DELAY)
+		if (GetTime() > lastAsteroidCreationTime + ASTEROID_DELAY && asteroidsCounter < MAX_ASTEROIDS / 4)
 		{
 			AsteroidSize nextSize = asteroidSizes[GetRandomValue(0, 2)];
-			AddAsteroid(GetNextAsteroidPosition(), nextSize);
+			AddAsteroid(GetNextAsteroidPosition(), nextSize, true);
 			lastAsteroidCreationTime = static_cast<float>(GetTime());
 		}
 	}
@@ -143,7 +156,7 @@ namespace Asteroids
 				result.y = GetScreenHeight() + offscreenDist;
 			}
 
-			result.x = static_cast<float>(GetRandomValue(static_cast<int>(- offscreenDist), GetScreenWidth() + static_cast<int>(offscreenDist)));
+			result.x = static_cast<float>(GetRandomValue(static_cast<int>(-offscreenDist), GetScreenWidth() + static_cast<int>(offscreenDist)));
 		}
 		else
 		{
@@ -178,10 +191,7 @@ namespace Asteroids
 	{
 		for (int i = 0; i < MAX_PROJECTILES; i++)
 		{
-			if (projectiles[i].isActive)
-			{
-				continue;
-			}
+			if (projectiles[i].isActive) continue;
 
 			projectiles[i] = CreateProjectile(position, player.direction);
 			break;
@@ -212,13 +222,129 @@ namespace Asteroids
 		}
 	}
 
+	bool CircleCircleCollision(float circle1x, float circle1y, float circle1r, float circle2x, float circle2y, float circle2r)
+	{
+		float distX = circle1x - circle2x;
+		float distY = circle1y - circle2y;
+		float distance = static_cast<float>(sqrt((distX * distX) + (distY * distY)));
+
+		if (distance <= circle1r + circle2r)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	void CheckGameCollisions()
+	{
+		if (invulnerabilityTimer <= 0)
+		{
+			AsteroidPlayerCollision();
+		}
+		else
+		{
+			invulnerabilityTimer -= GetFrameTime();
+		}
+
+		BulletAsteroidCollision();
+	}
+
+	void AsteroidPlayerCollision()
+	{
+		for (int i = 0; i < MAX_ASTEROIDS; i++)
+		{
+			if (!asteroidsArr[i].isActive) continue;
+
+			if (CircleCircleCollision(player.position.x, player.position.y, player.radius, asteroidsArr[i].position.x, asteroidsArr[i].position.y, asteroidsArr[i].asteroidRadius))
+			{
+				player.lives--;
+				invulnerabilityTimer = 2.0f;
+			}
+		}
+
+		if (player.lives <= 0)
+		{
+			player.isAlive = false;
+		}
+
+	}
+
+	void ReduceAsteroidSize(Asteroid& asteroid)
+	{
+		asteroid.isActive = false;
+		asteroidsCounter--;
+
+		switch (asteroid.size)
+		{
+		case Large:
+			AddAsteroid(asteroid.position, Medium, false);
+			AddAsteroid(asteroid.position, Medium, false);
+			break;
+
+		case Medium:
+			AddAsteroid(asteroid.position, Small, false);
+			AddAsteroid(asteroid.position, Small, false);
+			break;
+
+		case Small:
+			asteroid.isActive = false;
+			asteroidsCounter--;
+			break;
+		}
+	}
+
+	void BulletAsteroidCollision()
+	{
+		for (int i = 0; i < MAX_ASTEROIDS; i++)
+		{
+			for (int j = 0; j < MAX_PROJECTILES; j++)
+			{
+				if (!asteroidsArr[i].isActive || !projectiles[j].isActive) continue;
+
+				if (CircleCircleCollision(projectiles[j].position.x, projectiles[j].position.y, projectiles[j].radius, asteroidsArr[i].position.x, asteroidsArr[i].position.y, asteroidsArr[i].asteroidRadius))
+				{
+				/*	asteroidsArr[i].isActive = false;
+
+					switch (asteroidsArr[i].size)
+					{
+					case Large:
+						AddAsteroid(asteroidsArr[i].position, Medium);
+						AddAsteroid(asteroidsArr[i].position, Medium);
+						break;
+
+					case Medium:
+						AddAsteroid(asteroidsArr[i].position, Small);
+						AddAsteroid(asteroidsArr[i].position, Small);
+						break;
+
+					case Small:
+						asteroidsArr[i].isActive = false;
+						break;
+					}*/
+
+					ReduceAsteroidSize(asteroidsArr[i]);
+					projectiles[j].isActive = false;
+				}
+			}
+		}
+	}
+
+	void PlayerLoses(Scenes& scene)
+	{
+		if (!player.isAlive)
+		{
+			scene = Scenes::LoseScreen;
+		}
+	}
+
 	void RunGame(Scenes& scene, bool isNewScene, Scenes previousScene)
 	{
 		if (isNewScene && previousScene != Scenes::Pause)
 		{
 			Init();
 		}
-		
+
 		Update(scene);
 		Drawing();
 	}
