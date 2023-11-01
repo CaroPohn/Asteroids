@@ -3,12 +3,14 @@
 #include "header/raymath.h"
 
 #include "Objects/Spaceship.h"
+#include "Game/Pause.h"
+#include "Objects/Button.h"
 
 namespace Asteroids
 {
 	Spaceship player;
 
-	static const int MAX_ASTEROIDS = 10;
+	static const int MAX_ASTEROIDS = 8;
 	static const int MAX_PROJECTILES = 20;
 
 	Asteroid static asteroidsArr[MAX_ASTEROIDS] = { 0 };
@@ -21,19 +23,37 @@ namespace Asteroids
 	Rectangle spaceship;
 	Vector2 origin;
 
-	static bool isPaused = false;
+	static Button pauseButton;
 
 	void Init()
 	{
 		Vector2 playerInitPosition = { static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2) };
 		player = InitSpaceship(playerInitPosition);
+
+		Texture2D pauseButtonTexture = LoadTexture("assets/pausebutton.png");
+		const float buttonWidth = static_cast<float>(pauseButtonTexture.width);
+		const float buttonHeight = static_cast<float>(pauseButtonTexture.height);
+		float buttonXPos = 20;
+		float buttonYPos = static_cast<float>(GetScreenHeight()) - buttonHeight - 10;
+
+		InitButton(pauseButton, pauseButtonTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+
+		for (int i = 0; i < MAX_ASTEROIDS; i++)
+		{
+			asteroidsArr[i].isActive = false;
+		}
+
+		for (int i = 0; i < MAX_PROJECTILES; i++)
+		{
+			projectiles[i].isActive = false;
+		}
 	}
 
 	void Update(Scenes& scene)
 	{
 		HideCursor();
 
-		scene = scene; //esto no va despues
+		CheckPauseInput(scene);
 		
 		UpdateAsteroidArray();
 
@@ -60,7 +80,24 @@ namespace Asteroids
 
 		PlayerDrawing(player, spaceship, angle);
 
+		DrawButton(pauseButton);
+
 		EndDrawing();
+	}
+
+	void CheckPauseInput(Scenes& scene)
+	{
+		if (CheckCollisionButtonMouse(GetMousePosition(), pauseButton))
+		{
+			pauseButton.isSelected = true;
+
+			if (CheckMouseInput(pauseButton))
+			{
+				scene = Scenes::Pause;
+			}
+		}
+		else
+			pauseButton.isSelected = false;
 	}
 
 	void AddAsteroid(Vector2 position, AsteroidSize size)
@@ -175,9 +212,9 @@ namespace Asteroids
 		}
 	}
 
-	void RunGame(Scenes& scene, bool isNewScene)
+	void RunGame(Scenes& scene, bool isNewScene, Scenes previousScene)
 	{
-		if (isNewScene)
+		if (isNewScene && previousScene != Scenes::Pause)
 		{
 			Init();
 		}

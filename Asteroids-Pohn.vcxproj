@@ -102,6 +102,7 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClCompile Include="src\Game\Credits.cpp" />
     <ClCompile Include="src\Game\GameLoop.cpp" />
     <ClCompile Include="src\Game\Menu.cpp" />
+    <ClCompile Include="src\Game\Pause.cpp" />
     <ClCompile Include="src\Game\Play.cpp" />
     <ClCompile Include="src\Game\Rules.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -114,6 +115,7 @@ xcopy /s /e /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClInclude Include="src\Game\Credits.h" />
     <ClInclude Include="src\Game\GameLoop.h" />
     <ClInclude Include="src\Game\Menu.h" />
+    <ClInclude Include="src\Game\Pause.h" />
     <ClInclude Include="src\Game\Play.h" />
     <ClInclude Include="src\Game\Rules.h" />
     <ClInclude Include="src\Game\Scenes.h" />

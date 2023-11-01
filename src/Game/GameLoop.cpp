@@ -7,6 +7,7 @@
 #include "Play.h"
 #include "Game/Credits.h"
 #include "Game/Rules.h"
+#include "Game/Pause.h"
 
 namespace Asteroids
 {
@@ -23,6 +24,7 @@ namespace Asteroids
 		scene = Scenes::Menu;
 		Scenes previousScene = Scenes::Exit;
 		bool isNewScene;
+		Scenes auxPrevScene = Scenes::Exit;
 
 		do
 		{
@@ -33,21 +35,27 @@ namespace Asteroids
 			{
 			case Scenes::Menu:
 				RunMenu(scene, isNewScene);
+				auxPrevScene = Scenes::Menu;
 				break;
 
 			case Scenes::Play:
-				RunGame(scene, isNewScene);
+				RunGame(scene, isNewScene, auxPrevScene);
+				auxPrevScene = Scenes::Play;
 				break;
 
 			case Scenes::Pause:
+				RunPause(scene, isNewScene);
+				auxPrevScene = Scenes::Pause;
 				break;
 
 			case Scenes::Rules:
 				RunRules(scene, isNewScene);
+				auxPrevScene = Scenes::Rules;
 				break;
 
 			case Scenes::Credits:
 				RunCredits(scene, isNewScene);
+				auxPrevScene = Scenes::Credits;
 				break;
 
 			case Scenes::LoseScreen:

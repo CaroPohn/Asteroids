@@ -10,6 +10,7 @@ namespace Asteroids
 	void Init();
 	void Update(Scenes& scene);
 	void Drawing();
+	void CheckPauseInput(Scenes& scene);
 	void AddAsteroid(Vector2 position, AsteroidSize size);
 	void AsteroidsCreation();
 	Vector2 GetNextAsteroidPosition();
@@ -19,5 +20,5 @@ namespace Asteroids
 	void CheckShottingInput();
 	void UpdateProjectileArray();
 	void DrawProjectileArray();
-	void RunGame(Scenes& scene, bool isNewScene);
+	void RunGame(Scenes& scene, bool isNewScene, Scenes previousScene);
 }
