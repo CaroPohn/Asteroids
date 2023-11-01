@@ -16,9 +16,9 @@ namespace Asteroids
 	
 	enum AsteroidSize
 	{
-		Small = 1,
-		Medium = 2,
-		Large = 4
+		Small,
+		Medium,
+		Large
 	};
 
 	struct Asteroid
@@ -30,6 +30,8 @@ namespace Asteroids
 		float rotationSpeed;
 		float creationTime;
 		Vector2 velocity;
+		float asteroidRadius;
+		Texture2D texture;
 	};
 
 	Asteroid InitAsteroid(Vector2 position, Vector2 velocity, AsteroidSize size);

@@ -11,11 +11,25 @@ namespace Asteroids
 
 		asteroid.isActive = true;
 		asteroid.size = size;
+
+		if (asteroid.size == Small)
+		{
+			asteroid.asteroidRadius = 12;
+		}
+		else if (asteroid.size == Medium)
+		{
+			asteroid.asteroidRadius = 24;
+		}
+		else if (asteroid.size == Large)
+		{
+			asteroid.asteroidRadius = 48;
+		}
+
 		asteroid.position = position;
 		asteroid.velocity = velocity;
 		asteroid.rotation = static_cast<float>(rand() % 360);
 		asteroid.rotationSpeed = static_cast<float>(GetRandomValue(MIN_ROT_SPEED, MAX_ROT_SPEED));
-		asteroid.creationTime = static_cast<float>(GetTime());
+		asteroid.creationTime = static_cast<float>(GetFrameTime());
 
 		return asteroid;
 	}
@@ -39,17 +53,8 @@ namespace Asteroids
 		{
 			return;
 		}
-		
-		float asteroidRadius = 0;
 
-		if (asteroid.size & Small)
-			asteroidRadius = 12;
-		else if (asteroid.size & Medium)
-			asteroidRadius = 24;
-		else if (asteroid.size & Large)
-			asteroidRadius = 48;
-
-		DrawCircleLines(static_cast<int>(asteroid.position.x), static_cast<int>(asteroid.position.y), asteroidRadius, WHITE);
+		DrawCircleLines(static_cast<int>(asteroid.position.x), static_cast<int>(asteroid.position.y), asteroid.asteroidRadius, WHITE);
 	}
 
 	void AsteroidsReturnToScreen(Asteroid& asteroid, float screenWidth, float screenHeight)
