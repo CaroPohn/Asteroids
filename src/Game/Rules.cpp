@@ -12,6 +12,8 @@ namespace Asteroids
 	Texture2D backMenuRulesButtonTexture;
 	Texture2D backMenuRulesButtonPressedTexture;
 
+	Music rulesMusic;
+
 	void InitRules()
 	{
 		rulesTexture = LoadTexture("assets/rules.png");
@@ -24,6 +26,8 @@ namespace Asteroids
 		float buttonYPos = static_cast<float>(GetScreenHeight()) - buttonHeight - 10;
 
 		InitButton(backMenuRulesButton, backMenuRulesButtonTexture, backMenuRulesButtonPressedTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+
+		rulesMusic = LoadMusicStream("assets/secondmenumusic.mp3");
 	}
 
 	void DrawRules()
@@ -51,6 +55,12 @@ namespace Asteroids
 			backMenuRulesButton.isSelected = false;
 	}
 
+	void UpdateRulesMusic()
+	{
+		PlayMusicStream(rulesMusic);
+		UpdateMusicStream(rulesMusic);
+	}
+
 	void RunRules(Scenes& scene, bool isNewScene)
 	{
 		if (isNewScene)
@@ -58,6 +68,7 @@ namespace Asteroids
 			InitRules();
 		}
 
+		UpdateRulesMusic();
 		DrawRules();
 		RulesInput(scene);
 	}
