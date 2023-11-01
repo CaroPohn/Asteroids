@@ -6,10 +6,10 @@ namespace Asteroids
 {
 	struct PowerUp
 	{
-		Vector2 position;
+		Vector2 position = { 0, 0 };
 		int maxTime = 10;
-		float timer;
-		bool isActive;
+		float timer = 0;
+		bool isActive = false;
 		float radius = 10.0f;
 	};
 

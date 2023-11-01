@@ -5,10 +5,10 @@ namespace Asteroids
 {
 	struct Spaceship
 	{
-		Vector2 position;
-		Vector2 direction;
+		Vector2 position = { 0, 0 };
+		Vector2 direction = { 0, 0 };
 		Vector2 acceleration = {300, 300};
-		Vector2 velocity;
+		Vector2 velocity = { 0, 0 };
 		Texture2D texture;
 		Texture2D livesTexture;
 		Rectangle dest = { 0, 0, 85, 50 };
@@ -16,7 +16,7 @@ namespace Asteroids
 		float radius = 50.0f;
 		int lives = 3;
 		bool isAlive = true;
-		int points;
+		int points = 0;
 	};
 
 	Spaceship InitSpaceship(Vector2 position);
