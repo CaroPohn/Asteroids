@@ -12,6 +12,7 @@ namespace Asteroids
 	void Drawing();
 	void DrawScore();
 	void CheckPauseInput(Scenes& scene);
+	void UpdateGameplayMusic();
 	void AddAsteroid(Vector2 position, AsteroidSize size, bool isSpawned);
 	void AsteroidsCreation();
 	Vector2 GetNextPosition();

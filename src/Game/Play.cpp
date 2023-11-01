@@ -35,6 +35,8 @@ namespace Asteroids
 	static Button pauseButton;
 	static Button pauseButtonPressed;
 
+	Music gameMusic;
+
 	void Init()
 	{
 		Vector2 playerInitPosition = { static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2) };
@@ -49,6 +51,8 @@ namespace Asteroids
 		const float buttonHeight = static_cast<float>(pauseButtonTexture.height);
 		float buttonXPos = 20;
 		float buttonYPos = static_cast<float>(GetScreenHeight()) - buttonHeight - 10;
+
+		gameMusic = LoadMusicStream("assets/gameplaymusic.mp3");
 
 		specialEnemy = InitSpecialEnemy(GetNextPosition(), player);
 
@@ -72,6 +76,8 @@ namespace Asteroids
 	{
 		HideCursor();
 
+		UpdateGameplayMusic();
+
 		CheckPauseInput(scene);
 
 		UpdateAsteroidArray();
@@ -91,6 +97,12 @@ namespace Asteroids
 		PowerUpController(powerUp);
 
 		PlayerLoses(scene);
+	}
+
+	void UpdateGameplayMusic()
+	{
+		PlayMusicStream(gameMusic);
+		UpdateMusicStream(gameMusic);
 	}
 
 	void Drawing()
