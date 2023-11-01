@@ -2,9 +2,10 @@
 
 namespace Asteroids
 {
-	void InitButton(Button& button, Texture2D texture, float x, float y, float width, float height, Color color)
+	void InitButton(Button& button, Texture2D texture, Texture2D texturePressed, float x, float y, float width, float height, Color color)
 	{
 		button.texture = texture;
+		button.texturePressed = texturePressed;
 		button.x = x;
 		button.y = y;
 		button.width = width;
@@ -17,12 +18,10 @@ namespace Asteroids
 	{
 		if (button.isSelected)
 		{
-			button.color = GRAY;
+			DrawTexture(button.texturePressed, static_cast<int>(button.x), static_cast<int>(button.y), button.color);
 		}
 		else
-			button.color = RAYWHITE;
-
-		DrawTexture(button.texture, static_cast<int>(button.x), static_cast<int>(button.y), button.color);
+			DrawTexture(button.texture, static_cast<int>(button.x), static_cast<int>(button.y), button.color);
 	}
 
 	bool CheckCollisionButtonMouse(Vector2 mousePos, Button button)
