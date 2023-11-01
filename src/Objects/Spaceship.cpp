@@ -9,12 +9,13 @@ namespace Asteroids
 		Spaceship player;
 
 		Texture2D spaceshipTexture = LoadTexture("assets/magiccat.png");
-		Texture2D livesTexture = LoadTexture("assets/magiccat.png");
+		Texture2D livesTexture = LoadTexture("assets/heart.png");
 
 		player.position = position;
 		player.velocity = { 0, 0 };
 		player.dest = { position.x, position.y, static_cast<float>(spaceshipTexture.width) * player.scale, static_cast<float>(spaceshipTexture.height) * player.scale};
 		player.texture = spaceshipTexture;
+		player.livesTexture = livesTexture;
 		player.points = 0;
 		
 		return player;
@@ -55,6 +56,20 @@ namespace Asteroids
 		Vector2 origin = { (player.dest.width) / 2, (player.dest.height) / 2 };
 		DrawCircleLines((int)player.dest.x, (int)player.dest.y, player.radius, RED);
 		DrawTexturePro(player.texture, source, player.dest, origin, angle, RAYWHITE);
+	}
+
+	void DrawLives(Spaceship player)
+	{
+		int distance = 10;
+		int livesWidth = player.livesTexture.width;
+		int livesX =GetScreenWidth() - distance - livesWidth;
+		int livesY = distance;
+
+		for (int i = 0; i < player.lives; i++)
+		{
+			DrawTexture(player.livesTexture, livesX, livesY, RAYWHITE);
+			livesX -= (livesWidth);
+		}
 	}
 
 	void SpaceshipReturnToScreen(Spaceship& player, int screenWidth, int screenHeight)
