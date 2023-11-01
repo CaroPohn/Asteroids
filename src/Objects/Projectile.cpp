@@ -31,7 +31,7 @@ namespace Asteroids
         projectile.position.y += projectile.speed * projectile.direction.y * GetFrameTime();
     }
 
-    void ProjectileDraw(Projectile& projectile)
+    void ProjectileDraw(Projectile projectile)
     {
         if (projectile.isActive)
         {
