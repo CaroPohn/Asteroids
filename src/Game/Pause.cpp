@@ -15,6 +15,11 @@ namespace Asteroids
 	Texture2D resumeButtonTexture;
 	Texture2D resumeButtonPressedTexture;
 
+	Music pauseMusic;
+	Sound clickPauseButtons;
+
+	static float pauseMusicVolume = 0.2f;
+
 	void InitPause()
 	{
 		pauseTexture = LoadTexture("assets/pause.png");
@@ -31,6 +36,9 @@ namespace Asteroids
 
 		float backMenuPausebuttonXPos = static_cast<float>(GetScreenWidth()) / 2 - buttonWidth - 180;
 		float resumeButtonXPos = static_cast<float>(GetScreenWidth()) / 2 + buttonWidth + 40;
+
+		pauseMusic = LoadMusicStream("assets/pausemusic.mp3");
+		clickPauseButtons = LoadSound("assets/button.mp3");
 
 		InitButton(backMenuPauseButton, backMenuPauseButtonTexture, backMenuPauseButtonPressedTexture, backMenuPausebuttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
 		InitButton(resumeButton, resumeButtonTexture, resumeButtonPressedTexture, resumeButtonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
@@ -56,6 +64,8 @@ namespace Asteroids
 
 			if (CheckMouseInput(backMenuPauseButton))
 			{
+				PlaySound(clickPauseButtons);
+				StopMusicStream(pauseMusic);
 				scene = Scenes::Menu;
 			}
 		}
@@ -68,11 +78,20 @@ namespace Asteroids
 
 			if (CheckMouseInput(resumeButton))
 			{
+				PlaySound(clickPauseButtons);
+				StopMusicStream(pauseMusic);
 				scene = Scenes::Play;
 			}
 		}
 		else
 			resumeButton.isSelected = false;
+	}
+
+	void UpdatePauseMusic()
+	{
+		SetMusicVolume(pauseMusic, pauseMusicVolume);
+		PlayMusicStream(pauseMusic);
+		UpdateMusicStream(pauseMusic);
 	}
 
 	void RunPause(Scenes& scene, bool isNewScene)
@@ -84,6 +103,7 @@ namespace Asteroids
 
 		ShowCursor();
 
+		UpdatePauseMusic();
 		DrawPause();
 		InputPause(scene);
 	}
