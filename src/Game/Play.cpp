@@ -35,7 +35,23 @@ namespace Asteroids
 	static Button pauseButton;
 	static Button pauseButtonPressed;
 
+	Sound pauseClick;
+
+	Sound shoot;
+	static float shootVolume = 0.2f;
+
+	Sound playerDamaged;
+	Sound specialEnemyDamaged;
+	static float specialEnemyVolume = 0.2f;
+
+	Sound breakAsteroid;
+	static float asteroidVolume = 0.2f;
+
+	Sound powerUpSound;
+
 	Music gameMusic;
+
+	static float gameMusicVolume = 0.1f;
 
 	void Init()
 	{
@@ -53,6 +69,13 @@ namespace Asteroids
 		float buttonYPos = static_cast<float>(GetScreenHeight()) - buttonHeight - 10;
 
 		gameMusic = LoadMusicStream("assets/gameplaymusic.mp3");
+
+		pauseClick = LoadSound("assets/button.mp3");
+		shoot = LoadSound("assets/shooting.mp3");
+		playerDamaged = LoadSound("assets/playerhurt.mp3");
+		specialEnemyDamaged = LoadSound("assets/specialenemy.mp3");
+		breakAsteroid = LoadSound("assets/asteroidbreak.mp3");
+		powerUpSound = LoadSound("assets/powerup.mp3");
 
 		specialEnemy = InitSpecialEnemy(GetNextPosition(), player);
 
@@ -101,6 +124,7 @@ namespace Asteroids
 
 	void UpdateGameplayMusic()
 	{
+		SetMusicVolume(gameMusic, gameMusicVolume);
 		PlayMusicStream(gameMusic);
 		UpdateMusicStream(gameMusic);
 	}
@@ -154,6 +178,7 @@ namespace Asteroids
 
 			if (CheckMouseInput(pauseButton))
 			{
+				PlaySound(pauseClick);
 				scene = Scenes::Pause;
 			}
 		}
@@ -256,6 +281,8 @@ namespace Asteroids
 	{
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
+			SetSoundVolume(shoot, 0.2f);
+			PlaySound(shoot);
 			AddProjectile(Vector2Add(player.position, player.direction));
 		}
 	}
@@ -315,6 +342,7 @@ namespace Asteroids
 
 			if (CircleCircleCollision(player.position.x, player.position.y, player.radius, asteroidsArr[i].position.x, asteroidsArr[i].position.y, asteroidsArr[i].asteroidRadius))
 			{
+				PlaySound(playerDamaged);
 				player.lives--;
 				invulnerabilityTimer = 1.0f;
 			}
@@ -362,6 +390,8 @@ namespace Asteroids
 
 				if (CircleCircleCollision(projectiles[j].position.x, projectiles[j].position.y, projectiles[j].radius, asteroidsArr[i].position.x, asteroidsArr[i].position.y, asteroidsArr[i].asteroidRadius))
 				{
+					SetSoundVolume(breakAsteroid, asteroidVolume);
+					PlaySound(breakAsteroid);
 					ReduceAsteroidSize(asteroidsArr[i]);
 					projectiles[j].isActive = false;
 				}
@@ -378,6 +408,8 @@ namespace Asteroids
 			if (CircleCircleCollision(projectiles[i].position.x, projectiles[i].position.y, projectiles[i].radius, specialEnemy.position.x, specialEnemy.position.y, specialEnemy.radius))
 			{
 				specialEnemy.lives--;
+				SetSoundVolume(specialEnemyDamaged, specialEnemyVolume);
+				PlaySound(specialEnemyDamaged);
 
 				if (specialEnemy.lives <= 0)
 				{
@@ -395,6 +427,7 @@ namespace Asteroids
 	{
 		if (CircleCircleCollision(player.position.x, player.position.y, player.radius, specialEnemy.position.x, specialEnemy.position.y, specialEnemy.radius))
 		{
+			PlaySound(playerDamaged);
 			player.lives--;
 			invulnerabilityTimer = 1.0f;
 		}
@@ -411,6 +444,7 @@ namespace Asteroids
 		{
 			if (player.lives < 3 && powerUp.isActive)
 			{
+				PlaySound(powerUpSound);
 				player.lives++;
 				powerUp.isActive = false;
 			}
