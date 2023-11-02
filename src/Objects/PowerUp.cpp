@@ -2,6 +2,11 @@
 
 namespace Asteroids
 {
+	void InitPowerUpTexture(PowerUp& powerup)
+	{
+		powerup.texture = LoadTexture("assets/powerup.png");
+	}
+	
 	void ChooseRandPosition(PowerUp& powerUp)
 	{
 		const int maxX = GetScreenWidth();
@@ -26,7 +31,7 @@ namespace Asteroids
 	{
 		if(powerUp.isActive)
 		{
-			DrawRectangle(static_cast<int>(powerUp.position.x), static_cast<int>(powerUp.position.y), 10, 10, PINK);
+			DrawTexture(powerUp.texture, static_cast<int>(powerUp.position.x), static_cast<int>(powerUp.position.y), RAYWHITE);
 		}
 	}
 }

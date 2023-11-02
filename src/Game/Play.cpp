@@ -57,6 +57,7 @@ namespace Asteroids
 	{
 		Vector2 playerInitPosition = { static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2) };
 		player = InitSpaceship(playerInitPosition);
+		InitPowerUpTexture(powerUp);
 
 		gameBackground = LoadTexture("assets/gameback.png");
 
