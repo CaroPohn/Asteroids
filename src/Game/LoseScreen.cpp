@@ -32,7 +32,7 @@ namespace Asteroids
 
 		const float buttonWidth = static_cast<float>(backMenuLoseButtonTexture.width);
 		const float buttonHeight = static_cast<float>(backMenuLoseButtonTexture.height);
-		float buttonYPos = static_cast<float>(GetScreenHeight()) / 2 - buttonHeight - 10;
+		float buttonYPos = static_cast<float>(GetScreenHeight()) / 4 * 3 - buttonHeight / 2;
 
 		float backMenuPausebuttonXPos = static_cast<float>(GetScreenWidth()) / 2 - buttonWidth - 180;
 		float playAgainButtonXPos = static_cast<float>(GetScreenWidth()) / 2 + buttonWidth + 40;
