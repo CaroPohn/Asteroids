@@ -43,7 +43,6 @@ namespace Asteroids
 
 		Vector2 origin = { specialEnemy.dest.width / 2, specialEnemy.dest.height / 2 };
 
-		DrawCircleLines(static_cast<int>(specialEnemy.position.x), static_cast<int>(specialEnemy.position.y), specialEnemy.radius, GREEN);
 		DrawTexturePro(specialEnemy.texture, specialEnemy.source, specialEnemy.dest, origin, specialEnemy.rotation, RAYWHITE);
 
 	}

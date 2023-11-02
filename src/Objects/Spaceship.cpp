@@ -54,7 +54,6 @@ namespace Asteroids
 	void PlayerDrawing(Spaceship player, Rectangle source, float angle)
 	{
 		Vector2 origin = { (player.dest.width) / 2, (player.dest.height) / 2 };
-		DrawCircleLines((int)player.dest.x, (int)player.dest.y, player.radius, RED);
 		DrawTexturePro(player.texture, source, player.dest, origin, angle, RAYWHITE);
 	}
 

@@ -75,7 +75,6 @@ namespace Asteroids
 
 		Vector2 origin = { asteroid.dest.width / 2, asteroid.dest.height / 2 };
 
-		DrawCircleLines(static_cast<int>(asteroid.position.x), static_cast<int>(asteroid.position.y), asteroid.asteroidRadius, WHITE);
 		DrawTexturePro(asteroid.texture, asteroid.source, asteroid.dest, origin, asteroid.rotation, RAYWHITE);
 	}
 
