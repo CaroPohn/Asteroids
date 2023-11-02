@@ -13,6 +13,9 @@ namespace Asteroids
 	Texture2D backMenuCreditsButtonPressedTexture;
 
 	Music creditsMusic;
+	Sound clickCreditButton;
+
+	static float creditsMusicVolume = 0.3f;
 
 	void InitCredits()
 	{
@@ -28,6 +31,7 @@ namespace Asteroids
 		InitButton(backMenuCreditsButton, backMenuCreditsButtonTexture, backMenuCreditsButtonPressedTexture, buttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
 
 		creditsMusic = LoadMusicStream("assets/secondmenumusic.mp3");
+		clickCreditButton = LoadSound("assets/button.mp3");
 	}
 
 	void DrawCredits()
@@ -48,6 +52,8 @@ namespace Asteroids
 
 			if (CheckMouseInput(backMenuCreditsButton))
 			{
+				PlaySound(clickCreditButton);
+				StopMusicStream(creditsMusic);
 				scene = Scenes::Menu;
 			}
 		}
@@ -57,6 +63,7 @@ namespace Asteroids
 
 	void UpdateCreditsMusic()
 	{
+		SetMusicVolume(creditsMusic, creditsMusicVolume);
 		PlayMusicStream(creditsMusic);
 		UpdateMusicStream(creditsMusic);
 	}
