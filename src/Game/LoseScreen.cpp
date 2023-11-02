@@ -17,6 +17,10 @@ namespace Asteroids
 	Texture2D backMenuLoseButtonPressedTexture;
 	Texture2D playAgainButtonPressedTexture;
 
+	Music loseScreenMusic;
+
+	static float loseScreenMusicVolume = 0.3f;
+
 	void InitLoseScreen()
 	{
 		loseScreenTexture = LoadTexture("assets/losescreen.png");
@@ -35,6 +39,8 @@ namespace Asteroids
 
 		InitButton(backMenuLoseButton, backMenuLoseButtonTexture, backMenuLoseButtonPressedTexture, backMenuPausebuttonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
 		InitButton(playAgainButton, playAgainButtonTexture, playAgainButtonPressedTexture, playAgainButtonXPos, buttonYPos, buttonWidth, buttonHeight, RAYWHITE);
+
+		loseScreenMusic = LoadMusicStream("assets/losescreenmusic.mp3");
 	}
 
 	void DrawLoseScreen()
@@ -76,6 +82,13 @@ namespace Asteroids
 			playAgainButton.isSelected = false;
 	}
 
+	void UpdateLoseScreenMusic()
+	{
+		SetMusicVolume(loseScreenMusic, loseScreenMusicVolume);
+		PlayMusicStream(loseScreenMusic);
+		UpdateMusicStream(loseScreenMusic);
+	}
+
 	void RunLoseScreen(Scenes& scene, bool isNewScene)
 	{
 		if (isNewScene)
@@ -85,6 +98,7 @@ namespace Asteroids
 
 		ShowCursor();
 
+		UpdateLoseScreenMusic();
 		DrawLoseScreen();
 		InputLoseScreen(scene);
 	}
