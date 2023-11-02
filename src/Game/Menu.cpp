@@ -19,6 +19,9 @@ namespace Asteroids
 	static Button exitButton;
 
 	Music menuMusic;
+	Sound clickButtons;
+
+	static float menuMusicVolume = 0.3f;
 
 	void InitMenu()
 	{
@@ -56,6 +59,8 @@ namespace Asteroids
 		InitButton(rulesButton, rulesButtonTexture, rulesButtonPressedTexture, buttonXPos, rulesButtonY, buttonWidth, buttonHeight, buttonColor);
 		InitButton(creditsButton, creditsButtonTexture, creditsButtonPressedTexture, buttonXPos, creditsButtonY, buttonWidth, buttonHeight,buttonColor);
 		InitButton(exitButton, exitButtonTexture, exitButtonPressedTexture, buttonXPos, exitButtonY, buttonWidth, buttonHeight, buttonColor);
+
+		clickButtons = LoadSound("assets/button.mp3");
 	}
 
 	void DrawMenu()
@@ -78,6 +83,7 @@ namespace Asteroids
 
 			if (CheckMouseInput(playButton))
 			{
+				PlaySound(clickButtons);
 				StopMusicStream(menuMusic);
 				scene = Scenes::Play;
 			}
@@ -90,6 +96,8 @@ namespace Asteroids
 			rulesButton.isSelected = true;
 			if (CheckMouseInput(rulesButton))
 			{
+				PlaySound(clickButtons);
+				StopMusicStream(menuMusic);
 				scene = Scenes::Rules;
 			}
 		}
@@ -101,6 +109,8 @@ namespace Asteroids
 			creditsButton.isSelected = true;
 			if (CheckMouseInput(creditsButton))
 			{
+				PlaySound(clickButtons);
+				StopMusicStream(menuMusic);
 				scene = Scenes::Credits;
 			}
 		}
@@ -112,6 +122,8 @@ namespace Asteroids
 			exitButton.isSelected = true;
 			if (CheckMouseInput(exitButton))
 			{
+				PlaySound(clickButtons);
+				StopMusicStream(menuMusic);
 				scene = Scenes::Exit;
 			}
 		}
@@ -121,6 +133,7 @@ namespace Asteroids
 
 	void UpdateMenuMusic()
 	{
+		SetMusicVolume(menuMusic, menuMusicVolume);
 		PlayMusicStream(menuMusic);
 		UpdateMusicStream(menuMusic);
 	}
